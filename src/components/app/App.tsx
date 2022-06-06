@@ -1,13 +1,14 @@
-import { Home } from 'containers/Home/Home'
+// @components
+import { Home } from 'containers/Home/Home';
 
-// @styles 
-import styles from './styles.module.scss'
+// @styles
+import styles from './styles.module.scss';
 
 export const App = () => {
-  return (
-    <div className={styles.app}>
-      <Home />
-    </div>
-  )
-}
-
+	console.log('App.tsx');
+	return (
+		<div className={styles.app}>
+			<Home />
+		</div>
+	);
+};
