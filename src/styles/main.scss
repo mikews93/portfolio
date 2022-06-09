@@ -1,0 +1,58 @@
+@import 'normalize';
+@import 'antd/dist/antd.css';
+@import 'mixins';
+@import 'colors';
+@import 'variables';
+
+body {
+	margin: 0;
+	background-color: $primary;
+	font-family: $font-base;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.flex {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.mt-5 {
+	margin-top: 5rem;
+}
+
+.absolute-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.center {
+	text-align: center;
+}
+
+.full-screen {
+	@include full-screen;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.full-height {
+	height: 100%;
+}

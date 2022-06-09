@@ -3,6 +3,11 @@ module.exports = {
 		browser: true,
 		es2021: true,
 	},
+	globals: {
+		JSX: true,
+		path: true,
+		__dirname: true,
+	},
 	extends: [
 		'plugin:react/recommended',
 		'plugin:react/jsx-runtime',
