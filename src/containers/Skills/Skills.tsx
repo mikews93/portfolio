@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import sortBy from 'lodash/sortBy';
+import orderBy from 'lodash/orderBy';
 
 // @components
 import AppWrapper from 'components/Wrapper/AppWrapper';
@@ -67,7 +67,7 @@ const Skills = () => {
 							))}
 						</motion.div>
 						<div className={styles.exp}>
-							{sortBy(experiences, 'year').map((experience, index) => (
+							{orderBy(experiences, 'year', 'desc').map((experience, index) => (
 								<motion.div className={styles.item} key={experience.year + index}>
 									<div className={styles.expYear}>
 										<p className='bold-text'>{experience.year}</p>
