@@ -18,7 +18,7 @@ import Portfolio from 'containers/Portfolio/Portfolio';
 
 // const fetcher = url => axios.get(url).then(res => res.data)
 
-export const App = () => {
+export const Root = () => {
 	return (
 		<ErrorBoundary>
 			<SharedDataProvider>
