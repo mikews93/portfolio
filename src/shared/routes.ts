@@ -3,8 +3,16 @@ export const ROUTES = {
   LOGIN: '/authenticate',
   ABOUT: '/about',
   PORTFOLIO: '/portfolio',
-  CONTACT: '/contact',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   NOT_FOUND: '*',
 };
+
+export const PORTFOLIO_ROUTES: { [key: string]: string } = {
+  ME: '/',
+  ABOUT: '/about',
+  WORK: '/work',
+  SKILLS: '/skills',
+  TESTIMONIALS: '/testimonials',
+  CONTACT: '/contact',
+}

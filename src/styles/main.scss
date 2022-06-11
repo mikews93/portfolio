@@ -3,6 +3,9 @@
 @import 'mixins';
 @import 'colors';
 @import 'variables';
+@import 'margins';
+@import 'typography';
+@import 'layout';
 
 body {
 	margin: 0;
@@ -16,43 +19,17 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.flex {
+.copyright {
+	width: 100%;
+	padding: 2rem 0 0;
+
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	justify-content: center;
-}
-
-.flex-row {
-	display: flex;
-	flex-direction: row;
 	align-items: center;
-	justify-content: center;
-}
 
-.mt-5 {
-	margin-top: 5rem;
-}
-
-.absolute-center {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
-.center {
-	text-align: center;
-}
-
-.full-screen {
-	@include full-screen;
-}
-
-.full-width {
-	width: 100%;
-}
-
-.full-height {
-	height: 100%;
+	p {
+		text-transform: capitalize;
+		color: $gray;
+	}
 }

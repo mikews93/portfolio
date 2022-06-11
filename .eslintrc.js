@@ -5,8 +5,7 @@ module.exports = {
 	},
 	globals: {
 		JSX: true,
-		path: true,
-		__dirname: true,
+		key: true,
 	},
 	extends: [
 		'plugin:react/recommended',

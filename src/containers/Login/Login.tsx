@@ -6,6 +6,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import { ROUTES } from 'shared/routes';
 
+// @hooks
+import { useLogin } from './services/useLogin';
+import { useNotifications } from 'shared/hooks/useNotifications';
+
 const { Content, Footer } = Layout;
 
 export const Login = () => {
@@ -14,21 +18,22 @@ export const Login = () => {
 	 */
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { errorNotification } = useNotifications();
+	const [login, { isLoginIn }] = useLogin();
 	// @ts-ignore
 	const { from } = location.state || { from: { pathname: ROUTES.HOME } };
 
 	/**
 	 * Callbacks
 	 */
-	const onFinish = (values: any) => {
-		console.log('Success:', values);
+	const onFinish = async (values: any) => {
+		const { error } = await login(values);
+		if (error) {
+			return errorNotification('Upps!', 'Something went wrong');
+		}
 		navigate(from.pathname);
 	};
 
-	const onFinishFailed = (errorInfo: any) => {
-		console.log('Failed:', errorInfo);
-		console.log({ location, from });
-	};
 	return (
 		<Layout className={styles.login}>
 			<Content className='flex'>
@@ -38,7 +43,6 @@ export const Login = () => {
 					className='login-form'
 					initialValues={{ remember: true }}
 					onFinish={onFinish}
-					onFinishFailed={onFinishFailed}
 				>
 					<Form.Item
 						name='username'
@@ -70,7 +74,13 @@ export const Login = () => {
 					</Form.Item>
 
 					<Form.Item className='flex'>
-						<Button type='primary' htmlType='submit' className='full-width' shape='round'>
+						<Button
+							type='primary'
+							htmlType='submit'
+							className='full-width'
+							shape='round'
+							loading={isLoginIn}
+						>
 							Log in
 						</Button>
 						<span className={styles.registerSection}>

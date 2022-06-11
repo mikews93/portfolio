@@ -14,7 +14,7 @@ export interface SharedDataType {
 	};
 }
 
-interface SharedDataContextType extends SharedDataType {
+export interface SharedDataContextType extends SharedDataType {
 	setSharedData: (data: SharedDataType) => void;
 }
 
