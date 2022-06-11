@@ -1,8 +1,8 @@
 export const ROUTES = {
-  HOME: '/',
+  PORTFOLIO: '/',
+  HOME: '/home',
   LOGIN: '/authenticate',
   ABOUT: '/about',
-  PORTFOLIO: '/portfolio',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
   NOT_FOUND: '*',

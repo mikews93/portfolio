@@ -36,7 +36,7 @@ export const Login = () => {
 
 	return (
 		<Layout className={styles.login}>
-			<Content className='flex'>
+			<Content className='flex-column'>
 				<h1>Login</h1>
 				<Form
 					name='normal_login'
