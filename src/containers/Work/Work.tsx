@@ -87,7 +87,7 @@ const Work = () => {
 						{filterWork.map((work, index) => (
 							<div className={styles.item} key={index}>
 								<div className={styles.img}>
-									<img src={urlFor(work.imgUrl)} alt={work.name} />
+									<img src={urlFor(work.imgUrl)} alt={work.title} />
 
 									<motion.div
 										whileHover={{ opacity: [0, 1] }}
