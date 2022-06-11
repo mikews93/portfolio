@@ -22,6 +22,7 @@ export const Home = () => {
 						};
 					})}
 				/>
+				<div className={styles.logo} />
 			</Header>
 			<Content style={{ padding: '0 50px' }}>
 				<Breadcrumb style={{ margin: '16px 0' }}>

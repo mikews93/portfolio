@@ -2,3 +2,14 @@
   height: 100vh;
 	width: 100vw;
 }
+
+@mixin flex {
+  display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin flex-column {
+	@include flex;
+  flex-direction: column;
+}

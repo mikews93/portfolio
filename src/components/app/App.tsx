@@ -13,6 +13,7 @@ import { SharedDataProvider } from 'shared/context/sharedDataProvider';
 
 // @routes
 import { ROUTES } from 'shared/routes';
+import Portfolio from 'containers/Portfolio/Portfolio';
 // import axios from 'axios'
 
 // const fetcher = url => axios.get(url).then(res => res.data)
@@ -38,6 +39,7 @@ export const App = () => {
 									</RestrictedRoutes>
 								}
 							/>
+							<Route path={ROUTES.PORTFOLIO} element={<Portfolio />} />
 							<Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
 						</Routes>
 					</BrowserRouter>

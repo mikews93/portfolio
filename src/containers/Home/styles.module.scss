@@ -1,5 +1,9 @@
+@import 'src/styles/colors';
+@import 'src/styles/mixins';
+
 .home {
-	background-color: #fafafa;
+	background-color: $primary;
+	@include full-screen;
 
 	.header {
 		.logo {
