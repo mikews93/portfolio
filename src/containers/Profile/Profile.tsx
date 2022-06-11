@@ -36,7 +36,7 @@ const Profile = () => {
 							<span>👋</span>
 							<div style={{ marginLeft: 20 }}>
 								<p className='p-text'>Hi, I am</p>
-								<h1 className='head-text'>Miguel</h1>
+								<h1 className='head-text'>Migue</h1>
 							</div>
 						</div>
 						<div className={styles.tagCmp}>
