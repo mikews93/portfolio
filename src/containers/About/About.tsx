@@ -8,6 +8,9 @@ import { client, urlFor } from 'shared/sanity/client';
 import AppWrapper from 'components/Wrapper/AppWrapper';
 import MotionWrap from 'components/Wrapper/MotionWrapper';
 
+// @utils
+import { translate } from 'shared/internationalization/translate';
+
 // @styles
 import styles from './styles.module.scss';
 
@@ -39,7 +42,8 @@ const About = () => {
 			<MotionWrap classNames={`${styles.about} whitebg`}>
 				<div id='about' className={styles.about}>
 					<h2 className='head-text'>
-						I know that <span>Good Design</span> <br /> means <span>Good Business</span>
+						{`${translate('I_know_that')}`} <span>{`${translate('good_design')}`}</span> <br />
+						{`${translate('means')}`} <span>{`${translate('good_business')}`}</span>
 					</h2>
 					<div className={styles.profiles}>
 						{abouts.map((about, index) => (

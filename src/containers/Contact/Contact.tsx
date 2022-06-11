@@ -9,6 +9,7 @@ import styles from './styles.module.scss';
 
 // @utils
 import { client } from 'shared/sanity/client';
+import { translate } from 'shared/internationalization/translate';
 
 type FormData = {
 	name: string;
@@ -57,7 +58,9 @@ const Contact = () => {
 		<AppWrapper idName='contact' classNames='whitebg'>
 			<MotionWrap classNames={styles.contact}>
 				<>
-					<h2 className='head-text'>Take a coffee & chat with me</h2>
+					<h2 className='head-text'>
+						{`${translate('take_a_coffee')}`} & {`${translate('chat_with_me')}`}
+					</h2>
 
 					<div className={styles.cards}>
 						<div className={styles.card}>
@@ -79,7 +82,7 @@ const Contact = () => {
 								<input
 									className='p-text'
 									type='text'
-									placeholder='Your Name'
+									placeholder={`${translate('your')} ${translate('name')}`}
 									name='name'
 									value={name}
 									onChange={handleChangeInput}
@@ -89,7 +92,7 @@ const Contact = () => {
 								<input
 									className='p-text'
 									type='email'
-									placeholder='Your Email'
+									placeholder={`${translate('your')} ${translate('email')}`}
 									name='email'
 									value={email}
 									onChange={handleChangeInput}
@@ -98,25 +101,27 @@ const Contact = () => {
 							<div>
 								<textarea
 									className='p-text'
-									placeholder='Your Message'
+									placeholder={`${translate('your')} ${translate('message')}`}
 									value={message}
 									name='message'
 									onChange={handleChangeInput}
 								/>
 							</div>
 							<button type='button' className='p-text' onClick={handleSubmit}>
-								{!loading ? 'Send Message' : 'Sending...'}
+								{!loading
+									? `${translate('send')} ${translate('message')}`
+									: `${translate('sending')}`}
 							</button>
 						</div>
 					) : (
 						<div>
-							<h3 className='head-text'>Thank you for getting in touch!</h3>
+							<h3 className='head-text'>{`${translate('thanks_for_contacting')}`}</h3>
 						</div>
 					)}
 
-					<div className='copyright'>
-						<p className='p-text'>@{new Date().getFullYear()} Miguel Blanco</p>
-						<p className='p-text'>All rights reserved</p>
+					<div className={`copyright ${styles.copy}`}>
+						<p className='p-text'>@{new Date().getFullYear()} Migue Blanco</p>
+						<p className='p-text'>{`${translate('all_rights_reserved')}`}</p>
 					</div>
 				</>
 			</MotionWrap>

@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 // @routes
 import { PORTFOLIO_ROUTES } from 'shared/routes';
 
+// @utils
+import { translate } from 'shared/internationalization/translate';
+
 // @styles
 import styles from './styles.module.scss';
 
@@ -18,8 +21,8 @@ const Navbar = () => {
 	 * Callbacks
 	 */
 	const handleClickMenu = () => setToggle(true);
-
 	const handleCloseMenu = () => setToggle(false);
+
 	return (
 		<nav className={styles.navbar}>
 			<div className={styles.logo}>
@@ -29,7 +32,7 @@ const Navbar = () => {
 				{Object.keys(PORTFOLIO_ROUTES).map((key: string) => (
 					<li key={`link-${key}`} className='p-text flex-column'>
 						<div />
-						<a href={`#${key.toLowerCase()}`}>{key.toLowerCase()}</a>
+						<a href={`#${key.toLowerCase()}`}>{`${translate(key)}`}</a>
 					</li>
 				))}
 			</ul>
@@ -46,7 +49,7 @@ const Navbar = () => {
 							{Object.keys(PORTFOLIO_ROUTES).map((key: string) => (
 								<li key={key}>
 									<a href={`#${key.toLowerCase()}`} onClick={handleCloseMenu}>
-										{key.toLowerCase()}
+										{`${translate(key)}`}
 									</a>
 								</li>
 							))}

@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 // @components
 import AppWrapper from 'components/Wrapper/AppWrapper';
 
+// @utils
+import { translate } from 'shared/internationalization/translate';
+
 // @styles
 import styles from './styles.module.scss';
 
@@ -35,19 +38,19 @@ const Profile = () => {
 						<div className={styles.cmp}>
 							<span>👋</span>
 							<div style={{ marginLeft: 20 }}>
-								<p className='p-text'>Hi, I am</p>
+								<p className='p-text'>{`${translate('greetings')}`}</p>
 								<h1 className='head-text'>Migue</h1>
 							</div>
 						</div>
 						<div className={styles.tagCmp}>
-							<p className='p-text'>External consultant</p>
-							<p className='p-text'>Web developer</p>
-							<p className='p-text'>Programer</p>
+							<p className='p-text'>{`${translate('external_consultant')}`}</p>
+							<p className='p-text'>{`${translate('web_developer')}`}</p>
+							<p className='p-text'>{`${translate('programmer')}`}</p>
 						</div>
 						<div className={styles.contact}>
-							<p className='p-text'>Like what you see?</p>
+							<p className='p-text'>{`${translate('like_what_you_see')}`}</p>
 							<Button type='primary' shape='round' onClick={handleClickContact}>
-								Get in touch
+								{`${translate('get_in_touch')}`}
 							</Button>
 						</div>
 					</div>
@@ -71,7 +74,7 @@ const Profile = () => {
 					whileInView={scaleVariants.whileInView}
 					className={styles.circles}
 				>
-					{['/assets/flutter.png', '/assets/sass.png', '/assets/redux.png'].map((circle, index) => (
+					{['/assets/node.png', '/assets/react.png', '/assets/sass.png'].map((circle, index) => (
 						<div className={`flex ${styles.circleCmp}`} key={`circle-${index}`}>
 							<img src={circle} alt='circle' />
 						</div>

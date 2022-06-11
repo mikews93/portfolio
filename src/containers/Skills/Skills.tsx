@@ -11,6 +11,7 @@ import styles from './styles.module.scss';
 
 // @utils
 import { client, urlFor } from 'shared/sanity/client';
+import { translate } from 'shared/internationalization/translate';
 
 type SkillsType = {
 	name: string;
@@ -48,7 +49,9 @@ const Skills = () => {
 		<AppWrapper idName='skills' classNames={`${styles.skills} whitebg`}>
 			<MotionWrap classNames={styles.skills}>
 				<>
-					<h2 className='head-text'>Skills & Experiences</h2>
+					<h2 className='head-text'>
+						{`${translate('skills')}`} & {`${translate('experiences')}`}
+					</h2>
 
 					<div className={styles.container}>
 						<motion.div className={styles.list}>

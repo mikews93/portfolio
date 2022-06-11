@@ -11,6 +11,7 @@ import styles from './styles.module.scss';
 
 // @utils
 import { client, urlFor } from 'shared/sanity/client';
+import { translate } from 'shared/internationalization/translate';
 
 interface WorkType {
 	title: string;
@@ -62,7 +63,7 @@ const Work = () => {
 			<MotionWrap classNames={styles.works}>
 				<>
 					<h2 className='head-text'>
-						Some of my recent <span>Projects</span>
+						{`${translate('some_of_my_recent')}`} <span>{`${translate('projects')}`}</span>
 					</h2>
 
 					<div className={styles.filter}>

@@ -6,6 +6,7 @@
   flex: 1;
   width: 100%;
   flex-direction: column;
+  position: relative;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -124,7 +125,8 @@
       cursor: pointer;
   
       &:hover {
-        background-color: #2430af;
+        filter: saturate(200%);
+        transition: all 0.3s ease-in-out;
       }
     }
   
@@ -132,5 +134,10 @@
       width: 100%;
       margin: 1rem 0;
     }
+  }
+
+  .copy {
+    position: absolute;
+    bottom: 2rem;
   }
 }
