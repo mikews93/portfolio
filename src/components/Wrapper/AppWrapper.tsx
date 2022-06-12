@@ -11,7 +11,7 @@ interface AppWrapperProps {
 }
 
 const AppWrapper = ({ children, idName, classNames = '' }: AppWrapperProps) => (
-	<div id={idName} className={`container ${classNames}`}>
+	<div id={idName} className={`${classNames} container`}>
 		<div className={`${styles.wrapper} flex`}>{children}</div>
 		<NavigationDots active={idName} />
 	</div>
