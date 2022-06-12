@@ -46,7 +46,7 @@ const Skills = () => {
 	}, []);
 
 	return (
-		<AppWrapper idName='skills' classNames={`${styles.skills} whitebg`}>
+		<AppWrapper idName='skills' classNames='whitebg'>
 			<MotionWrap classNames={styles.skills}>
 				<>
 					<h2 className='head-text'>

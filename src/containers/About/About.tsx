@@ -38,8 +38,8 @@ const About = () => {
 	}, []);
 
 	return (
-		<AppWrapper idName='about' classNames={`${styles.about} whitebg`}>
-			<MotionWrap classNames={`${styles.about} whitebg`}>
+		<AppWrapper idName='about' classNames='whitebg'>
+			<MotionWrap classNames={`${styles.about}`}>
 				<div id='about' className={styles.about}>
 					<h2 className='head-text'>
 						{`${translate('I_know_that')}`} <span>{`${translate('good_design')}`}</span> <br />
