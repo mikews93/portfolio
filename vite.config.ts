@@ -9,5 +9,8 @@ export default ({ mode }) => {
 
 	return defineConfig({
 		plugins: [svgr(), tsconfigPaths(), react()],
+		server: {
+			port: 4000,
+		}
 	});
 }

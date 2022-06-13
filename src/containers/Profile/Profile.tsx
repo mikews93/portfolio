@@ -74,7 +74,7 @@ const Profile = () => {
 					whileInView={scaleVariants.whileInView}
 					className={styles.circles}
 				>
-					{['/assets/node.png', '/assets/react.png', '/assets/sass.png'].map((circle, index) => (
+					{['/assets/node.png', '/assets/react.svg', '/assets/sass.png'].map((circle, index) => (
 						<div className={`flex ${styles.circleCmp}`} key={`circle-${index}`}>
 							<img src={circle} alt='circle' />
 						</div>
