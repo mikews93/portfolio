@@ -1,5 +1,6 @@
 @import 'src/styles/mixins';
 @import 'src/styles/colors';
+@import 'src/styles/variables';
 
 :global(#me) {
   position: relative;
@@ -89,6 +90,7 @@
       margin-top: 3rem;
       p {
         max-width: 200px;
+        text-align: center;
 
         @media screen and (min-width: 2000px) {
           max-width: 450px;
@@ -96,12 +98,23 @@
       }
 
       button {
-        margin-top: 0.5rem;
-        font-size: 14px;
+        padding: 0.7rem 2rem;
+        border-radius: 40px;
+        border: none;
         background-color: $secondary;
-        border-color: $secondary;
-        span {
-          font-size: inherit;
+    
+        font-weight: 500;
+        color: $white;
+        outline: none;
+        margin: 1rem 0 0 0;
+        font-family: $font-base;
+    
+        transition: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+        cursor: pointer;
+    
+        &:hover {
+          filter: saturate(150%);
+          transition: all 0.3s ease-in-out;
         }
       }
     }

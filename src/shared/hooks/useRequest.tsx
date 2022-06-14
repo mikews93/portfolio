@@ -8,6 +8,7 @@ type UseRequestReturn<T> = [
 	{
 		isLoading: boolean;
 		error: any;
+		mutate: (data: T) => void;
 	}
 ];
 
@@ -23,7 +24,7 @@ export const useRequest = <T,>({ path, name, options }: UseRequestOptions): UseR
 	}
 
 	const url = name ? `${path}/${name}` : path;
-	const { data, error, isValidating } = useSwr(url, getFetcher(options));
+	const { data, error, isValidating, mutate } = useSwr(url, getFetcher(options));
 
-	return [data, { error, isLoading: (!data && !error) || isValidating }];
+	return [data, { mutate, error, isLoading: (!data && !error) || isValidating }];
 };

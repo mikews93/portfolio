@@ -26,7 +26,9 @@ const Navbar = () => {
 	return (
 		<nav className={styles.navbar}>
 			<div className={styles.logo}>
-				<img src='assets/logo.svg' alt='logo' />
+				<a href='#me'>
+					<img src='assets/logo.svg' alt='logo' />
+				</a>
 			</div>
 			<ul className={styles.links}>
 				{Object.keys(PORTFOLIO_ROUTES).map((key: string) => (

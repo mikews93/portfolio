@@ -1,4 +1,3 @@
-import { Button } from 'antd';
 import { motion } from 'framer-motion';
 
 // @components
@@ -49,9 +48,9 @@ const Profile = () => {
 						</div>
 						<div className={styles.contact}>
 							<p className='p-text'>{`${translate('the_solution')}`}</p>
-							<Button type='primary' shape='round' onClick={handleClickContact}>
+							<button type='button' className='p-text' onClick={handleClickContact}>
 								{`${translate('get_in_touch')}`}
-							</Button>
+							</button>
 						</div>
 					</div>
 				</motion.div>
