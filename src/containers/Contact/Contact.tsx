@@ -65,8 +65,11 @@ const Contact = () => {
 					<div className={styles.cards}>
 						<div className={styles.card}>
 							<img src='/assets/email.png' alt='email' />
-							<a href='mailto:mbtechorg@gmail.com' className='p-text'>
-								mbtechorg@gmail.com
+							<a
+								href='mailto:&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#98;&#116;&#101;&#99;&#104;&#111;&#114;&#103;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;'
+								className='p-text'
+							>
+								{`${translate('email_me')}`}
 							</a>
 						</div>
 						<div className={styles.card}>
