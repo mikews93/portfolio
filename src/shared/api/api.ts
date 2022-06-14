@@ -24,6 +24,13 @@ export type RequestObject = {
 
 const { VITE_API_URL } = import.meta.env;
 
+const SANITY_METHOD_MAPPER = {
+  GET: 'query',
+  POST: 'create',
+  PUT: 'mutate',
+  DELETE: 'delete',
+  PATCH: 'mutate',
+}
 
 const getToken = () => {
   const { token } = getLocalStorage(AUTH_PROFILE);
@@ -59,13 +66,26 @@ const requestCall = ({ method = 'GET', url, data, headers, timeout, params }: Om
   });
 }
 
-export const getFetcher = ({ isSanity, params, ...options }: Omit<RequestObject, 'url'>) =>
+const sanityCall = ({ method = 'GET', url, data, params }:  Omit<RequestObject, 'isSanity'>) => { 
+  switch (SANITY_METHOD_MAPPER[method || 'GET']) {
+    case SANITY_METHOD_MAPPER.POST:
+      return client.create(data).then((res: any) => res);
+    case SANITY_METHOD_MAPPER.PUT:
+      return client.mutate(data).then((res:any) => res);
+    case SANITY_METHOD_MAPPER.DELETE:
+      return client.delete(data).then((res:any) => res);
+    default:
+      return client.fetch(url, params).then((res:any) => res);
+  }
+}
+
+export const getFetcher = ({ isSanity, ...options }: Omit<RequestObject, 'url'>) =>
   (url: string) => {
     if (isSanity) {
-      return client.fetch(url, params).then(res => res);
+      return sanityCall({ url,  ...options });
     }
 
-    return requestCall({ url, params, ...options }).then((res: any) => res.data || res)
+    return requestCall({ url,  ...options }).then((res: any) => res.data || res)
   }
 
 export const SWR_CONFIG = {

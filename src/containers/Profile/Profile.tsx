@@ -75,7 +75,7 @@ const Profile = () => {
 					className={styles.circles}
 				>
 					{['/assets/node.png', '/assets/react.svg', '/assets/sass.png'].map((circle, index) => (
-						<div className={`flex ${styles.circleCmp}`} key={`circle-${index}`}>
+						<div className='flex' key={`circle-${index}`}>
 							<img src={circle} alt='circle' />
 						</div>
 					))}

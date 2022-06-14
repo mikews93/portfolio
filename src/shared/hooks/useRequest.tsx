@@ -18,7 +18,7 @@ type UseRequestOptions = {
 };
 
 export const useRequest = <T,>({ path, name, options }: UseRequestOptions): UseRequestReturn<T> => {
-	if (!path) {
+	if (!path && !options.isSanity) {
 		throw new Error('Path is required');
 	}
 

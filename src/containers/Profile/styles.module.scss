@@ -1,7 +1,7 @@
 @import 'src/styles/mixins';
 @import 'src/styles/colors';
 
-:global(#home) {
+:global(#me) {
   position: relative;
   background: url("/assets/bgIMG.png");
   background-size: cover;
@@ -9,8 +9,8 @@
   background-repeat: repeat;
 
   // disable the default padding styles
-  .wrapper {
-    padding: 0;
+  div[class*="wrapper"] {
+    margin: 0;
   }
 
   :global(.copyright) {
