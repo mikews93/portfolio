@@ -29,6 +29,7 @@
 
   @media screen and (min-width: 2000px) {
     padding-top: 8rem;
+    margin-left: 4rem;
   }
 
   @media screen and (max-width: 1200px) {
@@ -86,6 +87,13 @@
     .contact {
       flex-direction: column;
       margin-top: 3rem;
+      p {
+        max-width: 200px;
+
+        @media screen and (min-width: 2000px) {
+          max-width: 450px;
+        }
+      }
 
       button {
         margin-top: 0.5rem;

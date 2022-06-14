@@ -48,7 +48,7 @@ const Profile = () => {
 							<p className='p-text'>{`${translate('programmer')}`}</p>
 						</div>
 						<div className={styles.contact}>
-							<p className='p-text'>{`${translate('like_what_you_see')}`}</p>
+							<p className='p-text'>{`${translate('the_solution')}`}</p>
 							<Button type='primary' shape='round' onClick={handleClickContact}>
 								{`${translate('get_in_touch')}`}
 							</Button>
