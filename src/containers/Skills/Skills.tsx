@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { motion } from 'framer-motion';
 import orderBy from 'lodash/orderBy';
 
@@ -10,8 +10,12 @@ import MotionWrap from 'components/Wrapper/MotionWrapper';
 import styles from './styles.module.scss';
 
 // @utils
-import { client, urlFor } from 'shared/sanity/client';
+import { urlFor } from 'shared/sanity/client';
 import { translate } from 'shared/internationalization/translate';
+import { generateSlug } from 'shared/utils/Strings';
+
+// @hooks
+import { useRequest } from 'shared/hooks/useRequest';
 
 type SkillsType = {
 	name: string;
@@ -29,21 +33,17 @@ type ExperienceType = {
 };
 
 const Skills = () => {
-	const [experiences, setExperiences] = useState<ExperienceType[]>([]);
-	const [skills, setSkills] = useState<SkillsType[]>([]);
-
-	useEffect(() => {
-		const query = '*[_type == "experiences"]';
-		const skillsQuery = '*[_type == "skills"]';
-
-		client.fetch(query).then((data) => {
-			setExperiences(data);
-		});
-
-		client.fetch(skillsQuery).then((data) => {
-			setSkills(data);
-		});
-	}, []);
+	/**
+	 * Queries
+	 */
+	const [experiences] = useRequest<ExperienceType[]>({
+		path: '*[_type == "experiences"]',
+		options: { isSanity: true },
+	});
+	const [skills] = useRequest<SkillsType[]>({
+		path: '*[_type == "skills"]',
+		options: { isSanity: true },
+	});
 
 	return (
 		<AppWrapper idName='skills' classNames='whitebg'>
@@ -55,7 +55,7 @@ const Skills = () => {
 
 					<div className={styles.container}>
 						<motion.div className={styles.list}>
-							{skills.map((skill, index) => (
+							{skills.map((skill: SkillsType, index: number) => (
 								<motion.div
 									whileInView={{ opacity: [0, 1] }}
 									transition={{ duration: 0.5 }}
@@ -70,21 +70,20 @@ const Skills = () => {
 							))}
 						</motion.div>
 						<div className={styles.exp}>
-							{orderBy(experiences, 'year', 'desc').map((experience, index) => (
-								<motion.div className={styles.item} key={experience.year + index}>
+							{orderBy(experiences, 'year', 'desc').map((experience) => (
+								<motion.div className={styles.item} key={experience.year + generateSlug()}>
 									<div className={styles.expYear}>
 										<p className='bold-text'>{experience.year}</p>
 									</div>
 									<motion.div className={styles.expWorks}>
 										{experience.works.map((work, index) => (
-											<>
+											<Fragment key={generateSlug()}>
 												<motion.div
 													whileInView={{ opacity: [0, 1] }}
 													transition={{ duration: 0.5, delay: index * 0.1 }}
 													className={styles.expWork}
 													data-tip
 													data-for={work.name}
-													key={work.name + index}
 												>
 													<h4 className='bold-text'>{work.name}</h4>
 													<p className='p-text'>{work.company}</p>
@@ -92,7 +91,7 @@ const Skills = () => {
 														{work.desc}
 													</p>
 												</motion.div>
-											</>
+											</Fragment>
 										))}
 									</motion.div>
 								</motion.div>

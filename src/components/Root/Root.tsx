@@ -11,6 +11,9 @@ import { NotFound } from 'components/NotFound/NotFound';
 // @providers
 import { SharedDataProvider } from 'shared/context/sharedDataProvider';
 
+// @api
+import { SWR_CONFIG } from 'shared/api/api';
+
 // @routes
 import { ROUTES } from 'shared/routes';
 import Portfolio from 'containers/Portfolio/Portfolio';
@@ -19,12 +22,7 @@ export const Root = () => {
 	return (
 		<ErrorBoundary>
 			<SharedDataProvider>
-				<SWRConfig
-					value={{
-						fetcher: (resource, init) => fetch(resource, init).then((res) => res.json()),
-						refreshInterval: 3000,
-					}}
-				>
+				<SWRConfig value={SWR_CONFIG}>
 					<BrowserRouter>
 						<Routes>
 							<Route path={ROUTES.LOGIN} element={<Login />} />

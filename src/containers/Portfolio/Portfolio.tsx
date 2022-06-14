@@ -8,6 +8,9 @@ import SocialMedia from 'components/SocialMedia/SocialMedia';
 // @styles
 import styles from './styles.module.scss';
 
+// @utils
+import { translate } from 'shared/internationalization/translate';
+
 const Contact = lazy(() => import('containers/Contact/Contact'));
 const Profile = lazy(() => import('containers/Profile/Profile'));
 const About = lazy(() => import('containers/About/About'));
@@ -27,6 +30,10 @@ const Portfolio = () => {
 				<Testimonials />
 				<Contact />
 				<SocialMedia />
+				<div className='copyright whitebg'>
+					<p className='p-text'>@{new Date().getFullYear()} Migue Blanco</p>
+					<p className='p-text'>{`${translate('all_rights_reserved')}`}</p>
+				</div>
 			</Suspense>
 		</div>
 	);

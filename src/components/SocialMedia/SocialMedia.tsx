@@ -1,8 +1,10 @@
 import { Tooltip } from 'antd';
-import { useEffect, useState } from 'react';
+
+// @hooks
+import { useRequest } from 'shared/hooks/useRequest';
 
 // @client
-import { client, urlFor } from 'shared/sanity/client';
+import { urlFor } from 'shared/sanity/client';
 
 // @styles
 import styles from './styles.module.scss';
@@ -16,20 +18,12 @@ type SocialMediaType = {
 
 const SocialMedia = () => {
 	/**
-	 * State
+	 * Queries
 	 */
-	const [socialMedia, setSocialMedia] = useState<SocialMediaType[]>([]);
-
-	/**
-	 * Effects
-	 */
-	useEffect(() => {
-		const query = '*[_type == "socialMedia"]';
-
-		client.fetch(query).then((data) => {
-			setSocialMedia(data);
-		});
-	}, []);
+	const [socialMedia] = useRequest<SocialMediaType[]>({
+		path: '*[_type == "socialMedia"]',
+		options: { isSanity: true },
+	});
 
 	/**
 	 * handlers

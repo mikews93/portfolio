@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
@@ -10,7 +10,10 @@ import MotionWrap from 'components/Wrapper/MotionWrapper';
 import styles from './styles.module.scss';
 
 // @utils
-import { client, urlFor } from 'shared/sanity/client';
+import { urlFor } from 'shared/sanity/client';
+
+// @hooks
+import { useRequest } from 'shared/hooks/useRequest';
 
 type TestimonialType = {
 	imageurl: string;
@@ -27,27 +30,21 @@ type BrandType = {
 
 const Testimonials = () => {
 	/**
+	 * Queries
+	 */
+	const [testimonials] = useRequest<TestimonialType[]>({
+		path: '*[_type == "testimonials"]',
+		options: { isSanity: true },
+	});
+	const [brands] = useRequest<BrandType[]>({
+		path: '*[_type == "brands"]',
+		options: { isSanity: true },
+	});
+
+	/**
 	 * State
 	 */
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [testimonials, setTestimonials] = useState<TestimonialType[]>([]);
-	const [brands, setBrands] = useState<BrandType[]>([]);
-
-	/**
-	 * Effects
-	 */
-	useEffect(() => {
-		const query = '*[_type == "testimonials"]';
-		const brandsQuery = '*[_type == "brands"]';
-
-		client.fetch(query).then((data) => {
-			setTestimonials(data);
-		});
-
-		client.fetch(brandsQuery).then((data) => {
-			setBrands(data);
-		});
-	}, []);
 
 	/**
 	 * handlers

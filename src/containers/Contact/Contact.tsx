@@ -118,11 +118,6 @@ const Contact = () => {
 							<h3 className='head-text'>{`${translate('thanks_for_contacting')}`}</h3>
 						</div>
 					)}
-
-					<div className={`copyright ${styles.copy}`}>
-						<p className='p-text'>@{new Date().getFullYear()} Migue Blanco</p>
-						<p className='p-text'>{`${translate('all_rights_reserved')}`}</p>
-					</div>
 				</>
 			</MotionWrap>
 		</AppWrapper>

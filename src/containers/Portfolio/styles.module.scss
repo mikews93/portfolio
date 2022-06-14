@@ -4,10 +4,4 @@
 .portfolio {
   background-color: $primary;
   font-family: $font-base;
-
-  @media screen and (max-width: 500px) {
-    .copyright {
-      padding: 2rem;
-    }
-  }
 }

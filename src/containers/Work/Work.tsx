@@ -10,8 +10,11 @@ import MotionWrap from 'components/Wrapper/MotionWrapper';
 import styles from './styles.module.scss';
 
 // @utils
-import { client, urlFor } from 'shared/sanity/client';
+import { urlFor } from 'shared/sanity/client';
 import { translate } from 'shared/internationalization/translate';
+
+// @hooks
+import { useRequest } from 'shared/hooks/useRequest';
 
 interface WorkType {
 	title: string;
@@ -24,7 +27,14 @@ interface WorkType {
 }
 
 const Work = () => {
-	const [works, setWorks] = useState<WorkType[]>([]);
+	/**
+	 * Queries
+	 */
+	const [works] = useRequest<WorkType[]>({
+		path: '*[_type == "works"]',
+		options: { isSanity: true },
+	});
+
 	const [filterWork, setFilterWork] = useState<WorkType[]>([]);
 	const [filters, setFilters] = useState<string[]>([]);
 	const [activeFilter, setActiveFilter] = useState('All');
@@ -34,14 +44,9 @@ const Work = () => {
 	});
 
 	useEffect(() => {
-		const query = '*[_type == "works"]';
-
-		client.fetch(query).then((data: WorkType[]) => {
-			setWorks(data);
-			setFilterWork(data);
-			setFilters([...new Set(data.map((work: WorkType) => work.tags).flat()), 'All']);
-		});
-	}, []);
+		setFilterWork(works);
+		setFilters([...new Set(works.map((work: WorkType) => work.tags).flat()), 'All']);
+	}, [works]);
 
 	const handleWorkFilter = (item: string) => {
 		setActiveFilter(item);

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 // @client
-import { client, urlFor } from 'shared/sanity/client';
+import { urlFor } from 'shared/sanity/client';
 
 // @components
 import AppWrapper from 'components/Wrapper/AppWrapper';
@@ -10,6 +10,9 @@ import MotionWrap from 'components/Wrapper/MotionWrapper';
 
 // @utils
 import { translate } from 'shared/internationalization/translate';
+
+// @hooks
+import { useRequest } from 'shared/hooks/useRequest';
 
 // @styles
 import styles from './styles.module.scss';
@@ -22,20 +25,12 @@ type AboutType = {
 
 const About = () => {
 	/**
-	 * State
+	 * Queries
 	 */
-	const [abouts, setAbouts] = useState<AboutType[]>([]);
-
-	/**
-	 * Effects
-	 */
-	useEffect(() => {
-		const query = '*[_type == "abouts"]';
-
-		client.fetch(query).then((data) => {
-			setAbouts(data);
-		});
-	}, []);
+	const [abouts] = useRequest<AboutType[]>({
+		path: '*[_type == "abouts"]',
+		options: { isSanity: true },
+	});
 
 	return (
 		<AppWrapper idName='about' classNames='whitebg'>

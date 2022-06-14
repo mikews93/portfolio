@@ -6,7 +6,6 @@
   flex: 1;
   width: 100%;
   flex-direction: column;
-  position: relative;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -134,10 +133,5 @@
       width: 100%;
       margin: 1rem 0;
     }
-  }
-
-  .copy {
-    position: absolute;
-    bottom: 2rem;
   }
 }
