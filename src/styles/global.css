@@ -22,6 +22,7 @@
 html {
   background: var(--bg);
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 html.lenis,
 html.lenis body {
@@ -199,6 +200,15 @@ p {
   line-height: 0.8;
   font-variant-numeric: tabular-nums;
 }
+.loader {
+  cursor: pointer;
+}
+.loader__skip {
+  position: absolute;
+  top: var(--pad);
+  right: var(--pad);
+  color: var(--muted);
+}
 .loader__bar {
   position: absolute;
   left: 0;
@@ -299,6 +309,57 @@ html:not(.ready) body {
   transform: scaleX(1);
   transform-origin: left;
 }
+.nav__sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 6px 4px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.nav__sound:hover,
+.nav__sound.is-on {
+  color: var(--ink);
+}
+.nav__bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.nav__bars i {
+  width: 2px;
+  height: 100%;
+  background: currentColor;
+  transform: scaleY(0.25);
+  transform-origin: bottom;
+  transition: transform 0.4s var(--ease);
+}
+.nav__sound.is-on .nav__bars i {
+  animation: eq 0.9s ease-in-out infinite alternate;
+  transform: scaleY(1);
+}
+.nav__sound.is-on .nav__bars i:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.nav__sound.is-on .nav__bars i:nth-child(3) {
+  animation-delay: -0.6s;
+}
+.nav__sound.is-on .nav__bars i:nth-child(4) {
+  animation-delay: -0.15s;
+}
+@media (max-width: 820px) {
+  .nav__sound-label {
+    display: none;
+  }
+}
 .nav__lang {
   border: 1px solid var(--line);
   border-radius: 99px;
@@ -309,7 +370,7 @@ html:not(.ready) body {
   .nav__links {
     display: none;
   }
-  .nav__lang {
+  .nav__sound {
     margin-left: auto;
   }
 }
@@ -1087,7 +1148,13 @@ section {
     width: 210px;
   }
   .swipe {
-    width: 220px;
+    width: 200px;
+  }
+  .swipe__card--2 {
+    transform: rotate(9deg) translate(22%, 2%);
+  }
+  .swipe__card--3 {
+    transform: rotate(-12deg) translate(-26%, 4%);
   }
   .float-card {
     min-width: 0;

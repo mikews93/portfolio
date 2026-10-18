@@ -4,6 +4,7 @@ import Lenis from 'lenis';
 import * as THREE from 'three';
 import type { Shape } from '../content';
 import { createScene, type Stop } from './scene';
+import { createSound } from './sound';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,7 +59,7 @@ function splitWords(el: HTMLElement) {
 }
 
 /* ---------- Preloader + hero intro ---------- */
-function intro() {
+function intro(ready: Promise<unknown>) {
   const loader = $('.loader');
   const count = $('.loader__count');
   const lines = $$('.hero__line .inner');
@@ -68,28 +69,60 @@ function intro() {
     document.documentElement.classList.add('ready');
     return;
   }
+  // The counter follows real work (fonts + the particle scene), never longer than ~2 s.
   const n = { v: 0 };
-  const tl = gsap.timeline();
-  tl.to(n, {
-    v: 100,
-    duration: 1.1,
-    ease: 'power2.inOut',
-    onUpdate: () => count && (count.textContent = String(Math.round(n.v)).padStart(3, '0')),
-  })
-    .to('.loader__bar', { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, 0)
-    .to(loader, { yPercent: -100, duration: 0.9, ease: 'expo.inOut' }, '+=0.1')
-    .add(() => {
-      loader?.remove();
-      document.documentElement.classList.add('ready');
-    })
-    .from('.hero .ch', { yPercent: 110, rotate: 6, duration: 1.1, ease: 'expo.out', stagger: 0.025 }, '-=0.45')
-    .from('.hero__eyebrow, .hero__tail, .hero__meta > *, .nav', { y: 24, autoAlpha: 0, duration: 1, ease: 'power3.out', stagger: 0.08 }, '-=0.8');
+  let target = 12;
+  const bump = (to: number) => () => (target = Math.max(target, to));
+  document.fonts.ready.then(bump(55));
+  ready.then(bump(100));
+  const render = () => {
+    n.v += (target - n.v) * 0.14;
+    if (count) count.textContent = String(Math.round(n.v)).padStart(3, '0');
+    gsap.set('.loader__bar', { scaleX: n.v / 100 });
+  };
+  gsap.ticker.add(render);
+  const minTime = new Promise((r) => setTimeout(r, 650));
+  const maxTime = new Promise((r) => setTimeout(r, 1600));
+  let skip: () => void = () => {};
+  const skipped = new Promise<void>((r) => (skip = r));
+  loader?.addEventListener('click', () => skip());
+  addEventListener('keydown', () => skip(), { once: true });
+  Promise.race([Promise.all([Promise.all([document.fonts.ready, ready]), minTime]), maxTime, skipped]).then(() => {
+    target = 100;
+    gsap
+      .timeline({ delay: 0.25, onStart: () => gsap.ticker.remove(render) })
+      .set(count, { textContent: '100' })
+      .to(loader, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'expo.inOut' })
+      .add(() => {
+        loader?.remove();
+        document.documentElement.classList.add('ready');
+      })
+      .from('.hero .ch', { yPercent: 110, rotate: 6, duration: 1.1, ease: 'expo.out', stagger: 0.025 }, '-=0.45')
+      .from('.hero__eyebrow, .hero__tail, .hero__meta > *, .nav', { y: 24, autoAlpha: 0, duration: 1, ease: 'power3.out', stagger: 0.08 }, '-=0.8');
+  });
+}
+
+/* ---------- Kinetic type: titles lean into the scroll ---------- */
+function kinetic() {
+  if (reduced) return;
+  const els = $$('.hero__title, .section-title, .work__title, .panel__name, .contact__big, .music__title');
+  const setters = els.map((el) => gsap.quickTo(el, 'skewY', { duration: 0.6, ease: 'power3.out' }));
+  const settle = gsap.delayedCall(0.15, () => setters.forEach((f) => f(0))).pause();
+  ScrollTrigger.create({
+    onUpdate: (st) => {
+      const v = gsap.utils.clamp(-5, 5, st.getVelocity() / -320);
+      setters.forEach((f) => f(v));
+      settle.restart(true);
+    },
+  });
 }
 
 /* ---------- Particle scene ---------- */
+let markReady: (v?: unknown) => void = () => {};
+const sceneReady = new Promise((r) => (markReady = r));
 async function scene() {
   const canvas = $<HTMLCanvasElement>('#gl');
-  if (!canvas) return;
+  if (!canvas) return markReady();
   try {
     await Promise.race([document.fonts.load('900 100px "Archivo Variable"'), new Promise((r) => setTimeout(r, 1500))]);
   } catch {
@@ -101,6 +134,7 @@ async function scene() {
   } catch {
     canvas.remove();
     document.documentElement.classList.add('no-gl');
+    markReady();
     return;
   }
   const mobile = !desktop;
@@ -137,6 +171,7 @@ async function scene() {
   ScrollTrigger.addEventListener('refresh', collect);
   collect();
   s.start();
+  markReady();
   // Build the rest of the shapes when the browser is idle.
   const idle = (window as any).requestIdleCallback ?? ((f: () => void) => setTimeout(f, 300));
   idle(() => s.warm(['galaxy', 'sphere', 'torus', 'book', 'wave', 'venn', 'helix', 'rings']));
@@ -177,6 +212,13 @@ function work() {
         ease: 'power3.out',
         scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left 70%', end: 'left 20%', scrub: 0.8 },
       });
+      const inner = $('.panel__media > *', p);
+      if (inner)
+        gsap.fromTo(
+          inner,
+          { clipPath: 'inset(-30% -80% -30% 100%)' },
+          { clipPath: 'inset(-30% -80% -30% -80%)', ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left 95%', end: 'left 30%', scrub: true } },
+        );
       const media = $('.panel__media', p);
       if (media)
         gsap.fromTo(
@@ -298,6 +340,36 @@ function pointer() {
   });
 }
 
+/* ---------- Sound: the site plays a G-major pentatonic as you explore ---------- */
+function sound() {
+  const btn = $<HTMLButtonElement>('.nav__sound');
+  if (!btn) return;
+  const snd = createSound();
+  btn.addEventListener('click', () => {
+    const on = snd.toggle();
+    btn.setAttribute('aria-pressed', String(on));
+    btn.classList.toggle('is-on', on);
+  });
+  const targets = $$('a, button, .chips li, .job, .marquee__set span, .lyrics li');
+  targets.forEach((el, i) => el.addEventListener('pointerenter', () => snd.pluck(i, el.matches('.job') ? 0.7 : 0.45)));
+  $$('a, button').forEach((el, i) => el.addEventListener('click', () => snd.pluck(i + 2, 0.8)));
+  // A soft chord each time the particles settle on a new shape.
+  let last = -1;
+  ScrollTrigger.create({
+    onUpdate: () => {
+      if (!btn.classList.contains('is-on')) return;
+      const idx = $$('[data-shape]').findIndex((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5 && r.left < innerWidth * 0.5 && r.right > innerWidth * 0.5;
+      });
+      if (idx >= 0 && idx !== last) {
+        last = idx;
+        snd.chord(idx);
+      }
+    },
+  });
+}
+
 /* ---------- Nav state ---------- */
 function nav() {
   const navEl = $('.nav');
@@ -316,10 +388,12 @@ function nav() {
   });
 }
 
-intro();
+intro(sceneReady);
 work();
 reveals();
+kinetic();
 pointer();
 nav();
+sound();
 scene();
 addEventListener('load', () => ScrollTrigger.refresh());

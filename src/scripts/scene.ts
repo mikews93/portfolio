@@ -159,6 +159,8 @@ const vert = /* glsl */ `
   uniform vec3 uC1;
   uniform vec3 uC2;
   uniform float uAlpha;
+  uniform vec3 uPointer;
+  uniform float uRepel;
   varying vec3 vColor;
   varying float vAlpha;
   void main() {
@@ -168,6 +170,11 @@ const vert = /* glsl */ `
     vec3 dir = normalize(p + vec3(0.0001));
     p += dir * uScatter * (0.4 + aRand * 1.6);
     p += vec3(sin(t * 2.0), cos(t * 1.7), sin(t * 1.3)) * uScatter * 0.25;
+    // The cursor (or a finger) parts the particles like a hand through sand.
+    vec2 dd = p.xy - uPointer.xy;
+    float push = smoothstep(1.15, 0.0, length(dd)) * uRepel;
+    p.xy += normalize(dd + 0.0001) * push * (0.35 + aRand * 0.45);
+    p.z += push * (0.3 + aRand * 0.6);
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     // Points near the pointer swell a little.
     vec4 clip = projectionMatrix * mv;
@@ -187,18 +194,19 @@ const frag = /* glsl */ `
     float d = length(gl_PointCoord - 0.5);
     float a = smoothstep(0.5, 0.0, d);
     a *= a;
-    gl_FragColor = vec4(vColor, a * vAlpha);
+    gl_FragColor = vec4(vColor, a * vAlpha * 0.6);
   }
 `;
 
 export function createScene(canvas: HTMLCanvasElement, opts: { reduced: boolean }) {
   const mobile = matchMedia('(max-width: 820px)').matches;
   const N = mobile ? 7000 : 16000;
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 1.75));
+  renderer.setClearColor(0x0a0a0c, 1);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  camera.position.set(0, 0, 9);
+  camera.position.set(0, 0, 14);
 
   const shapes = new Map<Shape, Float32Array>();
   const get = (s: Shape) => {
@@ -222,6 +230,8 @@ export function createScene(canvas: HTMLCanvasElement, opts: { reduced: boolean 
     uC1: { value: new THREE.Color('#ff4a3d') },
     uC2: { value: new THREE.Color('#f1ece4') },
     uAlpha: { value: 1 },
+    uPointer: { value: new THREE.Vector3(99, 99, 0) },
+    uRepel: { value: 0 },
   };
   const mat = new THREE.ShaderMaterial({
     vertexShader: vert,
@@ -235,6 +245,13 @@ export function createScene(canvas: HTMLCanvasElement, opts: { reduced: boolean 
   const group = new THREE.Group();
   group.add(points);
   scene.add(group);
+
+  const ray = new THREE.Raycaster();
+  const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+  const hit = new THREE.Vector3();
+  const ndc = new THREE.Vector2();
+  let active = 0;
+  let baseZ = 9;
 
   let stops: Stop[] = [];
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -251,7 +268,7 @@ export function createScene(canvas: HTMLCanvasElement, opts: { reduced: boolean 
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     // Keep shapes framed on narrow screens.
-    camera.position.z = w < 820 ? 13 : 9;
+    baseZ = w < 820 ? 13 : 9;
     camera.updateProjectionMatrix();
   }
   resize();
@@ -259,7 +276,12 @@ export function createScene(canvas: HTMLCanvasElement, opts: { reduced: boolean 
   addEventListener('pointermove', (e) => {
     pointer.tx = (e.clientX / innerWidth) * 2 - 1;
     pointer.ty = -(e.clientY / innerHeight) * 2 + 1;
+    active = 1;
   });
+  const idle = () => (active = 0);
+  addEventListener('pointerup', (e) => e.pointerType !== 'mouse' && idle());
+  addEventListener('pointercancel', idle);
+  document.documentElement.addEventListener('pointerleave', idle);
 
   function frame() {
     const now = performance.now();
@@ -313,6 +335,18 @@ export function createScene(canvas: HTMLCanvasElement, opts: { reduced: boolean 
     } else if (!opts.reduced) spin += dt * 0.08;
     group.rotation.y = spin + pointer.x * 0.3 + (cur?.shape === 'monogram' ? Math.sin(time * 0.4) * 0.08 : 0);
     group.rotation.x = -pointer.y * 0.2 + (cur?.shape === 'wave' ? 0.35 : 0);
+
+    // Fly through the cloud while it changes shape.
+    const targetZ = baseZ - morph * 2.6 + (1 - easeOut(intro)) * 5;
+    camera.position.z += (targetZ - camera.position.z) * 0.1;
+
+    // Pointer in the group's own space, for the repel field.
+    group.updateMatrixWorld();
+    ndc.set(pointer.tx, pointer.ty);
+    ray.setFromCamera(ndc, camera);
+    plane.constant = -group.position.z;
+    if (ray.ray.intersectPlane(plane, hit)) uniforms.uPointer.value.copy(group.worldToLocal(hit));
+    uniforms.uRepel.value += ((opts.reduced ? 0 : active) - uniforms.uRepel.value) * 0.08;
 
     renderer.render(scene, camera);
     requestAnimationFrame(frame);
