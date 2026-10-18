@@ -1,16 +1,25 @@
-node_modules
+# build output
+dist/
+# generated types
+.astro/
 
-# testing
-/coverage
+# dependencies
+node_modules/
 
-# production
-/dist
-
-# misc
-.DS_Store
-.env*.local
-
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-yarn.lock
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+.shots

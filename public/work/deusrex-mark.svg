@@ -1,0 +1,15 @@
+<!-- One bar, one bowl, one gap. Bowl stroke 60 vs stem 58 is the optical
+     correction for a curve, not a typo. Drawn path, never <text> — a <text>
+     node renders in the viewer's own system font. -->
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2FC7A0" />
+      <stop offset="100%" stop-color="#12876B" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="87" fill="url(#g)" />
+  <rect x="125" y="114" width="58" height="284" rx="6" fill="#fff" />
+  <path fill="none" stroke="#fff" stroke-width="60" stroke-linejoin="round"
+        d="M207,144 H245 A112,112 0 0 1 245,368 H207" />
+</svg>

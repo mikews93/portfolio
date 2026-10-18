@@ -1,0 +1,396 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+import { t as dict, projects, jobs, skills, lyrics, site, type Lang } from '../content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = dict[lang];
+const other = lang === 'es' ? 'en' : 'es';
+const canonical = lang === 'es' ? `${site.url}/` : `${site.url}/en/`;
+const year = new Date().getFullYear();
+const chords = [
+  { c: 'Sol', l: 'Así tomados de la mano,', s: 9, r: 'a' },
+  { c: 'Re/Fa#', l: 'como testigo nuestro Dios.', s: 9, r: 'b' },
+  { c: 'Mim', l: 'Quiero decirte que te amo,', s: 8, r: 'a' },
+  { c: 'Do', l: 'que tú eres mi gran bendición.', s: 9, r: 'b' },
+];
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Miguel Antonio Blanco Salcedo',
+  alternateName: 'Migue Blanco',
+  url: site.url,
+  jobTitle: lang === 'es' ? 'Ingeniero de software' : 'Software engineer',
+  address: { '@type': 'PostalAddress', addressLocality: 'Envigado', addressCountry: 'CO' },
+  sameAs: [site.github, 'https://deusrex.io'],
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es" href={`${site.url}/`} />
+    <link rel="alternate" hreflang="en" href={`${site.url}/en/`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0a0a0c" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${site.url}/og.jpg`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+    <link rel="preload" as="image" href="/img/miguel.webp" />
+  </head>
+  <body>
+    <div class="loader" aria-hidden="true">
+      <span class="loader__name">Migue Blanco</span>
+      <span class="loader__count">000</span>
+      <span class="loader__bar"></span>
+    </div>
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"></div>
+
+    <header class="nav">
+      <a href="#top" class="nav__logo" aria-label="Migue Blanco">
+        <span>MB</span><i></i>
+      </a>
+      <nav class="nav__links" aria-label="Main">
+        <a href="#work">{t.nav.work}</a>
+        <a href="#path">{t.nav.path}</a>
+        <a href="#music">{t.nav.music}</a>
+        <a href="#contact">{t.nav.contact}</a>
+      </nav>
+      <a class="nav__lang" href={t.nav.switchHref} hreflang={other}>{t.nav.switch}</a>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero" data-shape="monogram" data-c1="#ff4a3d" data-c2="#f6d9c8" data-x="2.6" data-y="1.15" data-ym="1.6" data-s="0.62" data-sm="0.55">
+        <p class="hero__eyebrow mono">{t.hero.eyebrow}</p>
+        <h1 class="hero__title">
+          <span class="hero__line"><span class="inner">{t.hero.line1}</span></span>
+          <span class="hero__line"><span class="inner">{t.hero.line2}</span></span>
+          <span class="hero__line hero__line--accent"><span class="inner">{t.hero.line3}</span></span>
+        </h1>
+        <p class="hero__tail serif">— {t.hero.tail}</p>
+        <div class="hero__meta mono">
+          <span>{t.hero.where}</span>
+          <span class="hero__scroll"><i></i>{t.hero.scroll}</span>
+        </div>
+      </section>
+
+      <!-- MANIFESTO -->
+      <section class="manifesto" data-shape="galaxy" data-c1="#ff4a3d" data-c2="#7a6cff" data-x="-3.1" data-s="0.95" data-sm="0.9" data-am="0.5">
+        <div class="manifesto__grid">
+          <figure class="portrait fade-up">
+            <img src="/img/miguel.webp" alt="Miguel Blanco" width="900" height="1794" loading="lazy" />
+            <figcaption class="mono">Miguel Antonio Blanco Salcedo</figcaption>
+          </figure>
+          <p class="manifesto__text">{t.manifesto}</p>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="stats" data-shape="sphere" data-c1="#ff4a3d" data-c2="#f1ece4" data-x="0" data-s="1.1" data-sm="0.75" data-a="0.7">
+        {
+          t.stats.map((s) => (
+            <div class="stat fade-up">
+              <span class="stat__n">
+                <span data-count={s.n}>{s.n.toLocaleString(lang)}</span>
+                {s.suffix}
+              </span>
+              <span class="stat__l mono">{s.label}</span>
+            </div>
+          ))
+        }
+      </section>
+
+      <!-- WORK -->
+      <section class="work" id="work">
+        <div class="work__pin">
+          <div class="work__head">
+            <p class="kicker mono">{t.work.kicker}</p>
+            <div class="work__count mono"><b>01</b> / {String(projects.length).padStart(2, '0')}</div>
+            <div class="work__progress"><i></i></div>
+          </div>
+          <div class="work__track">
+            <div class="panel panel--intro" data-shape="torus" data-c1="#2FC7A0" data-c2="#c9fff0" data-x="2.4" data-s="0.9" data-sm="0.6">
+              <h2 class="work__title">{t.work.title}</h2>
+              <p class="mono work__hint">{t.work.drag} →</p>
+            </div>
+            {
+              projects.map((p, i) => (
+                <article
+                  class={`panel panel--${p.id}`}
+                  style={`--pc:${p.color};--pa:${p.accent}`}
+                  data-shape={p.shape}
+                  data-c1={p.color}
+                  data-c2={p.accent}
+                  data-x="2.3"
+                  data-s="1.05"
+                  data-am="0.45"
+                  data-sm="0.55"
+                >
+                  <div class="panel__text">
+                    <p class="panel__idx mono reveal">
+                      {String(i + 1).padStart(2, '0')} — {p.kicker[lang]}
+                    </p>
+                    <h3 class="panel__name reveal">{p.name}</h3>
+                    <p class="panel__pitch reveal">{p.pitch[lang]}</p>
+                    <ul class="panel__points reveal">
+                      {p.points[lang].map((x) => (
+                        <li>{x}</li>
+                      ))}
+                    </ul>
+                    <ul class="chips reveal">
+                      {p.stack.map((x) => (
+                        <li>{x}</li>
+                      ))}
+                    </ul>
+                    <div class="panel__foot reveal">
+                      <span class="status mono">
+                        <i />
+                        {p.status[lang]}
+                      </span>
+                      {p.url ? (
+                        <a class="btn magnetic" href={p.url} target="_blank" rel="noopener">
+                          {t.work.visit} <span aria-hidden="true">↗</span>
+                        </a>
+                      ) : (
+                        <span class="mono muted">{t.work.private}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div class="panel__media" data-tilt>
+                    {p.id === 'deusrex' && (
+                      <div class="browser">
+                        <div class="browser__bar">
+                          <i />
+                          <i />
+                          <i />
+                          <span class="mono">deusrex.io</span>
+                        </div>
+                        <video autoplay muted loop playsinline preload="none" poster="/work/deusrex-poster.jpg">
+                          <source src="/work/deusrex-hero.webm" type="video/webm" />
+                          <source src="/work/deusrex-hero.mp4" type="video/mp4" />
+                        </video>
+                        <div class="browser__overlay">
+                          <img src="/work/deusrex-mark.svg" alt="" width="44" height="44" />
+                          <p class="serif">
+                            {lang === 'es' ? 'La medicina es para las personas.' : 'Medicine is for people.'}
+                            <em>{lang === 'es' ? 'Lo demás, para la IA.' : 'The rest is for AI.'}</em>
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {p.id === 'biblia' && (
+                      <div class="device">
+                        <img src="/work/biblia.webp" alt="Biblia de Estudio, Juan 1" loading="lazy" width="780" height="1688" />
+                        <div class="float-card float-card--greek">
+                          <span class="mono">G3056 · λόγος</span>
+                          <b class="serif">Verbo, palabra</b>
+                          <small>{lang === 'es' ? 'sust. masc. nominativo singular' : 'noun, masc. nominative singular'}</small>
+                        </div>
+                        <div class="float-card float-card--ai">
+                          <span class="mono">✦ {lang === 'es' ? 'Estudiar con IA' : 'Study with AI'}</span>
+                          <small>{lang === 'es' ? '4 citas · Jn 1:1, Gn 1:1, Col 1:16, Heb 1:2' : '4 citations · Jn 1:1, Gen 1:1, Col 1:16, Heb 1:2'}</small>
+                        </div>
+                      </div>
+                    )}
+                    {p.id === 'cancionero' && (
+                      <div class="sheet">
+                        <div class="sheet__head mono">
+                          <span>Para siempre · {lang === 'es' ? 'Estrofa 1' : 'Verse 1'}</span>
+                          <span>Capo 2</span>
+                        </div>
+                        {chords.map((c) => (
+                          <div class={`sheet__line rh-${c.r}`}>
+                            <span class="sheet__chord mono">{c.c}</span>
+                            <span class="sheet__lyric serif">{c.l}</span>
+                            <span class="sheet__syl mono">{c.s}</span>
+                          </div>
+                        ))}
+                        <div class="sheet__ai">
+                          <span class="mono">Claude · {lang === 'es' ? 'opción B' : 'option B'}</span>
+                          <p class="serif">
+                            {lang === 'es'
+                              ? '«Aunque los días se hagan grises, al otro día saldrá el sol.»'
+                              : '“Even if the days turn grey, the sun comes out the next day.”'}
+                          </p>
+                        </div>
+                        <div class="sheet__wave" aria-hidden="true">
+                          {Array.from({ length: 48 }).map((_, k) => (
+                            <i style={`--h:${(18 + Math.abs(Math.sin(k * 0.7) * 70 + Math.sin(k * 2.3) * 22)).toFixed(0)}%;--d:${(k * 0.04).toFixed(2)}s`} />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {p.id === 'hoyvemos' && (
+                      <div class="swipe">
+                        <div class="swipe__card swipe__card--3">
+                          <span class="mono">IMDb 8.1</span>
+                          <b>{lang === 'es' ? 'Joya escondida' : 'Hidden gem'}</b>
+                        </div>
+                        <div class="swipe__card swipe__card--2">
+                          <span class="mono">IMDb 7.8 · RT 94%</span>
+                          <b>{lang === 'es' ? 'Cine del mundo' : 'World cinema'}</b>
+                        </div>
+                        <div class="swipe__card swipe__card--1">
+                          <span class="mono">IMDb 8.4 · RT 97% · MC 88</span>
+                          <b>{lang === 'es' ? 'Para hoy' : 'Tonight'}</b>
+                          <div class="swipe__match">{lang === 'es' ? '¡Coinciden!' : 'It’s a match!'}</div>
+                          <div class="swipe__votes">
+                            <span>✕</span>
+                            <span>♥</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section class="path" id="path" data-shape="helix" data-c1="#ff4a3d" data-c2="#ffb199" data-x="4.9" data-s="0.75" data-sm="0.5" data-a="0.55" data-am="0.35">
+        <p class="kicker mono">{t.path.kicker}</p>
+        <h2 class="section-title"><span class="title-split">{t.path.title}</span></h2>
+        <ol class="jobs">
+          {
+            jobs.map((j) => (
+              <li class="job" data-hover>
+                <span class="job__line" />
+                <span class="job__years mono">
+                  {j.from} — {j.to[lang]}
+                </span>
+                <div class="job__who">
+                  <h3>{j.company}</h3>
+                  <p class="serif">{j.role[lang]}</p>
+                  <span class="mono muted">{j.place}</span>
+                </div>
+                <div class="job__what">
+                  <p>{j.text[lang]}</p>
+                  <ul class="chips">
+                    {j.tags.map((x) => (
+                      <li>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="edu fade-up">
+          <h3 class="mono kicker">{t.edu.title}</h3>
+          <ul>
+            {
+              t.edu.items.map((e) => (
+                <li>
+                  {e.y && <span class="mono">{e.y}</span>}
+                  <b>{e.t}</b>
+                  <span class="muted">{e.s}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section class="skills" data-shape="sphere" data-c1="#7a6cff" data-c2="#ff4a3d" data-x="0" data-s="1.3" data-sm="0.9" data-a="0.6">
+        <p class="kicker mono">{t.skills.kicker}</p>
+        <h2 class="section-title"><span class="title-split">{t.skills.title}</span></h2>
+        <div class="marquee" aria-hidden="true">
+          {
+            skills.map((g) => (
+              <div class="marquee__row">
+                {[0, 1].map(() => (
+                  <span class="marquee__set">
+                    <em class="serif">{g.g}</em>
+                    {g.items.map((x) => (
+                      <span>{x}</span>
+                    ))}
+                  </span>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+        <ul class="skills__list sr-only">
+          {skills.map((g) => <li>{g.g}: {g.items.join(', ')}</li>)}
+        </ul>
+      </section>
+
+      <!-- MUSIC -->
+      <section class="music" id="music" data-shape="rings" data-c1="#d8b26e" data-c2="#fff1d6" data-x="-3.4" data-s="1.2" data-sm="0.75">
+        <div class="music__grid">
+          <div class="phone" data-tilt>
+            <video autoplay muted loop playsinline preload="none" poster="/music/para-siempre.jpg">
+              <source src="/music/para-siempre-canvas.mp4" type="video/mp4" />
+            </video>
+            <div class="phone__ui">
+              <img src="/music/para-siempre.jpg" alt="" width="48" height="48" loading="lazy" />
+              <div>
+                <b>Para siempre</b>
+                <span>Migue Blanco</span>
+              </div>
+            </div>
+          </div>
+          <div class="music__text">
+            <p class="kicker mono gold">{t.music.kicker}</p>
+            <h2 class="music__title serif"><span class="title-split">{t.music.title}</span></h2>
+            <p class="mono muted">{t.music.sub}</p>
+            <p class="music__date mono"><i></i>{t.music.date}</p>
+            <ol class="lyrics serif">
+              {lyrics.map((l) => <li>{l}</li>)}
+            </ol>
+            <p class="fade-up">{t.music.text}</p>
+            <p class="mono muted small">{t.music.soon}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="contact" id="contact" data-shape="monogram" data-c1="#ff4a3d" data-c2="#f1ece4" data-x="3.3" data-y="-1.3" data-s="0.7" data-sm="0.45" data-a="0.8">
+        <p class="kicker mono">{t.contact.kicker}</p>
+        <h2 class="contact__big" aria-label={t.contact.title}>
+          {[...t.contact.title].map((ch) => <span class="ch" aria-hidden="true">{ch === ' ' ? ' ' : ch}</span>)}
+        </h2>
+        <p class="contact__text">{t.contact.text}</p>
+        <div class="contact__actions">
+          <a class="btn btn--big magnetic" href={`mailto:${site.email}`}>{t.contact.email} <span aria-hidden="true">↗</span></a>
+          <a class="btn btn--ghost magnetic" href={site.whatsapp} target="_blank" rel="noopener">{t.contact.wa}</a>
+          <a class="btn btn--ghost magnetic" href={site.github} target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p class="mono muted contact__mail">{site.email} · {site.phone}</p>
+      </section>
+    </main>
+
+    <footer class="footer mono">
+      <span>© {year} Migue Blanco</span>
+      <span>{t.footer}</span>
+      <a href={t.nav.switchHref} hreflang={other}>{lang === 'es' ? 'English version' : 'Versión en español'}</a>
+    </footer>
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>
