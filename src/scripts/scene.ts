@@ -172,8 +172,8 @@ const vert = /* glsl */ `
     p += vec3(sin(t * 2.0), cos(t * 1.7), sin(t * 1.3)) * uScatter * 0.25;
     // The cursor (or a finger) parts the particles like a hand through sand.
     vec2 dd = p.xy - uPointer.xy;
-    float push = smoothstep(1.15, 0.0, length(dd)) * uRepel;
-    p.xy += normalize(dd + 0.0001) * push * (0.35 + aRand * 0.45);
+    float push = smoothstep(1.7, 0.0, length(dd)) * uRepel;
+    p.xy += normalize(dd + 0.0001) * push * (0.6 + aRand * 0.7);
     p.z += push * (0.3 + aRand * 0.6);
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     // Points near the pointer swell a little.

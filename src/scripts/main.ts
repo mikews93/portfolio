@@ -204,6 +204,26 @@ function work() {
       },
     });
     workTrigger = tween.scrollTrigger!;
+    // Media ripples like liquid when the gallery moves fast or on hover.
+    const disp = document.querySelector('#liquid feDisplacementMap');
+    if (disp) {
+      const o = { v: 0, hover: 0 };
+      const apply = () => disp.setAttribute('scale', (o.v + o.hover).toFixed(1));
+      ScrollTrigger.create({
+        trigger: pin,
+        start: 'top top',
+        end: () => `+=${dist()}`,
+        onUpdate: (st) => gsap.to(o, { v: Math.min(90, Math.abs(st.getVelocity()) / 25), duration: 0.3, overwrite: true, onUpdate: apply, onComplete: () => void gsap.to(o, { v: 0, duration: 0.9, ease: 'power2.out', onUpdate: apply }) }),
+      });
+      $$('.panel__media').forEach((m) => {
+        m.addEventListener('pointerenter', () => gsap.to(o, { hover: 28, duration: 0.6, onUpdate: apply }));
+        m.addEventListener('pointerleave', () => gsap.to(o, { hover: 0, duration: 0.8, onUpdate: apply }));
+      });
+    }
+    // Giant outlined numbers drift at their own speed: depth between layers.
+    $$('.panel__ghost').forEach((g) =>
+      gsap.fromTo(g, { xPercent: 35 }, { xPercent: -35, ease: 'none', scrollTrigger: { trigger: g.parentElement!, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } }),
+    );
     $$('.panel').forEach((p) => {
       gsap.from($$('.reveal', p), {
         y: 60,
@@ -299,6 +319,53 @@ function reveals() {
   );
 }
 
+/* ---------- Breathing type: letters widen near the cursor (Archivo's wdth axis) ---------- */
+function breathe() {
+  if (reduced) return;
+  const groups = [$$('.hero .ch'), $$('.contact__big .ch')].filter((g) => g.length);
+  // Each title's resting width (its CSS font-stretch); letters near the cursor condense toward 70%.
+  const base = (ch: HTMLElement) => parseFloat(getComputedStyle(ch.closest('h1, h2')!).fontStretch) || 115;
+  const bases = groups.map((g) => base(g[0]));
+  if (finePointer) {
+    let mx = -9999;
+    let my = -9999;
+    addEventListener('pointermove', (e) => {
+      mx = e.clientX;
+      my = e.clientY;
+    });
+    gsap.ticker.add(() => {
+      for (const [gi, chars] of groups.entries()) {
+        const b0 = bases[gi];
+        const box = chars[0].parentElement!.closest('h1, h2')!.getBoundingClientRect();
+        if (box.bottom < 0 || box.top > innerHeight) continue;
+        // Read every box first, then write, so the browser lays out once per frame.
+        const rects = chars.map((c) => c.getBoundingClientRect());
+        for (const [k, ch] of chars.entries()) {
+          const r = rects[k];
+          const d = Math.hypot(r.left + r.width / 2 - mx, r.top + r.height / 2 - my);
+          const f = Math.max(0, 1 - d / 320);
+          const cur = Number(ch.dataset.f ?? 0);
+          const next = cur + (f - cur) * 0.15;
+          if (Math.abs(next - cur) < 0.002) continue;
+          ch.dataset.f = String(next);
+          ch.style.fontStretch = `${b0 - next * (b0 - 70)}%`;
+          ch.style.fontWeight = String(Math.round(800 + next * 100));
+        }
+      }
+    });
+  } else {
+    // Touch screens: a slow wave runs through the letters.
+    gsap.ticker.add((time) => {
+      groups.forEach((chars, gi) =>
+        chars.forEach((ch, i) => {
+          const f = Math.pow((Math.sin(time * 1.4 - i * 0.5) + 1) / 2, 3);
+          ch.style.fontStretch = `${bases[gi] - f * (bases[gi] - 80)}%`;
+        }),
+      );
+    });
+  }
+}
+
 /* ---------- Pointer niceties ---------- */
 function pointer() {
   if (!finePointer || reduced) return;
@@ -313,6 +380,11 @@ function pointer() {
     $$('a, button, [data-hover]').forEach((el) => {
       el.addEventListener('pointerenter', () => dot.classList.add('is-hover'));
       el.addEventListener('pointerleave', () => dot.classList.remove('is-hover'));
+    });
+    $$<HTMLElement>('.panel__media[data-href]').forEach((el) => {
+      el.addEventListener('pointerenter', () => dot.classList.add('is-view'));
+      el.addEventListener('pointerleave', () => dot.classList.remove('is-view'));
+      el.addEventListener('click', () => window.open(el.dataset.href, '_blank', 'noopener'));
     });
   }
   $$('.magnetic').forEach((el) => {
@@ -392,6 +464,7 @@ intro(sceneReady);
 work();
 reveals();
 kinetic();
+breathe();
 pointer();
 nav();
 sound();

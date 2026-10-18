@@ -170,6 +170,63 @@ p {
     display: block;
   }
 }
+.cursor span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bg);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cursor.is-view {
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  mix-blend-mode: normal;
+  background: var(--ink);
+}
+.cursor.is-view span {
+  opacity: 1;
+}
+.fx {
+  position: absolute;
+}
+.panel__ghost {
+  position: absolute;
+  right: 4vw;
+  bottom: -6vh;
+  z-index: -1;
+  font-weight: 900;
+  font-stretch: 125%;
+  font-size: 46vh;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--pc) 40%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+@media (min-width: 900px) {
+  .panel__media > * {
+    filter: url(#liquid);
+  }
+  .panel__media[data-href] {
+    cursor: none;
+  }
+}
+@media (max-width: 899px) {
+  .panel__ghost {
+    font-size: 38vw;
+    bottom: auto;
+    top: 40px;
+    right: 0;
+  }
+}
 .cursor.is-hover {
   width: 56px;
   height: 56px;
