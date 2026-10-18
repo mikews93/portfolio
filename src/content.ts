@@ -2,7 +2,8 @@ export type Lang = 'es' | 'en';
 
 export const site = {
   url: 'https://migueblanco.com',
-  email: 'mbtechorg@gmail.com',
+  email: 'contacto@migueblanco.com',
+  linkedin: 'https://www.linkedin.com/in/mikews935',
   phone: '+57 300 732 3102',
   whatsapp: 'https://wa.me/573007323102',
   github: 'https://github.com/mikews93',
@@ -162,7 +163,19 @@ export const jobs: Job[] = [
   {
     from: '2026',
     to: { es: 'Hoy', en: 'Now' },
-    company: 'Deus Rex · MB Technology Solutions',
+    company: 'Hoag Health System',
+    role: { es: 'Senior Backend Engineer', en: 'Senior Backend Engineer' },
+    place: 'Remoto · California, EE. UU.',
+    text: {
+      es: 'Plataforma de telemedicina con comunicación en tiempo real entre pacientes y médicos. Integré AWS Bedrock para automatizar el triaje clínico y orquesto agentes de IA en Python con las APIs del backend, con manejo de datos HIPAA e integración con el EHR de Epic.',
+      en: 'Telemedicine platform with real-time patient–provider communication. I integrated AWS Bedrock to automate clinical triage and orchestrate Python AI agents with the backend APIs, with HIPAA-compliant data handling and Epic EHR integration.',
+    },
+    tags: ['Python', 'AWS Bedrock', 'AI agents', 'HIPAA', 'Epic EHR'],
+  },
+  {
+    from: '2026',
+    to: { es: 'Hoy', en: 'Now' },
+    company: 'Deus Rex',
     role: { es: 'Fundador e ingeniero principal', en: 'Founder & lead engineer' },
     place: 'Envigado, CO',
     text: {
@@ -173,27 +186,39 @@ export const jobs: Job[] = [
   },
   {
     from: '2022',
-    to: { es: 'Hoy', en: 'Now' },
-    company: 'Videate Inc.',
-    role: { es: 'Senior Full Stack · Tech Lead', en: 'Senior Full Stack · Tech Lead' },
-    place: 'Remoto · EE. UU.',
+    to: { es: '2026', en: '2026' },
+    company: 'Videate',
+    role: { es: 'Senior Full-Stack Lead Engineer', en: 'Senior Full-Stack Lead Engineer' },
+    place: 'Remoto · Texas, EE. UU.',
     text: {
-      es: 'Contratado directamente tras liderar su equipo desde TEAM International. Reconstruí el dashboard desde cero (diseño, propuesta técnica y producción) y creé el paquete de WebSockets que conecta el dashboard, las máquinas de AWS y la extensión de Chrome en tiempo real.',
-      en: 'Hired directly after leading their team through TEAM International. Rebuilt the dashboard from scratch (design, technical proposal, production) and built the WebSocket package that links the dashboard, AWS machines and the Chrome extension in real time.',
+      es: 'Lideré la reescritura completa del producto: la nueva experiencia redujo la curva de aprendizaje un 30 % y los hooks y componentes reutilizables subieron la eficiencia del equipo un 25 %. Construí y mantuve la API en Go y el paquete de WebSockets que conecta el dashboard con las máquinas de AWS.',
+      en: 'Led the complete rewrite of the product: the new UX cut the learning curve by 30% and reusable hooks and components raised team efficiency by 25%. Built and maintained the Go API and the WebSocket package linking the dashboard to AWS machines.',
     },
-    tags: ['React', 'TypeScript', 'Go', 'WebSockets'],
+    tags: ['React', 'TypeScript', 'Node', 'Go', 'WebSockets'],
+  },
+  {
+    from: '2021',
+    to: { es: '2022', en: '2022' },
+    company: 'TEAM International',
+    role: { es: 'Senior Frontend Engineer', en: 'Senior Frontend Engineer' },
+    place: 'Medellín, CO',
+    text: {
+      es: 'Lideré un equipo de 4 desarrolladores en una plataforma de video educativo: sistema de autenticación, componentes de video y funcionalidades frontend escalables con React.',
+      en: 'Led a team of 4 developers on a video education platform: authentication system, video components and scalable frontend features in React.',
+    },
+    tags: ['React', 'JavaScript', 'Leadership'],
   },
   {
     from: '2019',
-    to: { es: '2022', en: '2022' },
-    company: 'TEAM International',
-    role: { es: 'Senior Software Developer', en: 'Senior Software Developer' },
-    place: 'Medellín, CO',
+    to: { es: '2021', en: '2021' },
+    company: 'Avantica',
+    role: { es: 'Software Developer', en: 'Software Developer' },
+    place: 'Panamá',
     text: {
-      es: 'Arrive Logistics (carga en EE. UU.), CIDDAP (facturas con OCR e IA, arquitectura frontend desde cero), Indigo (financiación agrícola en Brasil y Argentina) y Videate, donde lideré un equipo de 4 y diseñé su API en Go.',
-      en: 'Arrive Logistics (US freight), CIDDAP (OCR + AI invoicing, frontend architecture from scratch), Indigo (ag financing in Brazil and Argentina) and Videate, where I led a team of 4 and designed their Go API.',
+      es: 'Diseñé y mantuve de punta a punta los módulos de onboarding, SSO y requisitos de Heylaika, una plataforma de cumplimiento normativo. Servicios backend en Python e interfaces en React.',
+      en: 'Designed and maintained the end-to-end onboarding, SSO and requirements modules of Heylaika, a compliance platform. Backend services in Python and React UIs.',
     },
-    tags: ['React', 'GraphQL', 'Node', 'Azure'],
+    tags: ['Python', 'React', 'SSO'],
   },
   {
     from: '2016',
@@ -202,10 +227,10 @@ export const jobs: Job[] = [
     role: { es: 'Software Developer', en: 'Software Developer' },
     place: 'Cartagena, CO',
     text: {
-      es: 'Evercheck verifica las licencias de miles de profesionales de la salud en EE. UU. Lideré migraciones de sistemas legados a microservicios y nuevas arquitecturas, hice code reviews y formé a nuevos colegas.',
-      en: 'Evercheck verifies the licenses of thousands of US healthcare professionals. I led migrations from legacy systems to microservices, did code reviews and mentored new colleagues.',
+      es: 'Reconstruí aplicaciones con frameworks modernos de JavaScript para miles de profesionales de la salud en EE. UU. (Evercheck). Hice code reviews y guié técnicamente a los nuevos integrantes del equipo.',
+      en: 'Rebuilt applications with modern JavaScript frameworks for thousands of US healthcare professionals (Evercheck). Did code reviews and gave technical guidance to new team members.',
     },
-    tags: ['Node', 'React', 'AWS', 'Microservices'],
+    tags: ['JavaScript', 'React', 'Node', 'AWS'],
   },
   {
     from: '2014',
@@ -230,7 +255,7 @@ export const t = {
     },
     nav: { work: 'Proyectos', path: 'Trayectoria', music: 'Música', contact: 'Contacto', switch: 'EN', switchHref: '/en/' },
     hero: {
-      eyebrow: 'Ingeniero de software · Fundador de Deus Rex · Cantautor',
+      eyebrow: 'Senior Full Stack Engineer · Fundador de Deus Rex · Cantautor',
       line1: 'Construyo',
       line2: 'software que',
       line3: 'piensa',
@@ -251,9 +276,9 @@ export const t = {
     edu: {
       title: 'Formación',
       items: [
-        { y: '2026', t: 'Máster en Ingeniería y Desarrollo de Soluciones de IA Generativa', s: 'EBIS Business Techschool' },
-        { y: '', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · Nueva York' },
-        { y: '', t: 'Ingeniería de Sistemas', s: 'Tecnológico Comfenalco · Cartagena' },
+        { y: '2026', t: 'Máster en Soluciones de IA Generativa (candidato)', s: 'EUNEIZ · EBIS Business Techschool · España' },
+        { y: '2016', t: 'Ingeniería de Sistemas', s: 'Tecnológico Comfenalco · Cartagena' },
+        { y: '2013', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · Binghamton, NY' },
       ],
     },
     skills: { kicker: 'Caja de herramientas', title: 'Con qué construyo' },
@@ -282,7 +307,7 @@ export const t = {
     },
     nav: { work: 'Work', path: 'Experience', music: 'Music', contact: 'Contact', switch: 'ES', switchHref: '/' },
     hero: {
-      eyebrow: 'Software engineer · Founder of Deus Rex · Songwriter',
+      eyebrow: 'Senior Full Stack Engineer · Founder of Deus Rex · Songwriter',
       line1: 'I build',
       line2: 'software that',
       line3: 'thinks',
@@ -303,9 +328,9 @@ export const t = {
     edu: {
       title: 'Education',
       items: [
-        { y: '2026', t: 'Master’s in Generative AI Engineering', s: 'EBIS Business Techschool' },
-        { y: '', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · New York' },
-        { y: '', t: 'Systems Engineering', s: 'Tecnológico Comfenalco · Cartagena' },
+        { y: '2026', t: 'Master’s in Generative AI Solutions (candidate)', s: 'EUNEIZ · EBIS Business Techschool · Spain' },
+        { y: '2016', t: 'Bachelor’s in Systems Engineering', s: 'Tecnológico Comfenalco · Cartagena' },
+        { y: '2013', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · Binghamton, NY' },
       ],
     },
     skills: { kicker: 'Toolbox', title: 'What I build with' },

@@ -29,7 +29,7 @@ const person = {
   url: site.url,
   jobTitle: lang === 'es' ? 'Ingeniero de software' : 'Software engineer',
   address: { '@type': 'PostalAddress', addressLocality: 'Envigado', addressCountry: 'CO' },
-  sameAs: [site.github, 'https://deusrex.io'],
+  sameAs: [site.linkedin, site.github, 'https://deusrex.io'],
 };
 ---
 
@@ -377,6 +377,7 @@ const person = {
         <div class="contact__actions">
           <a class="btn btn--big magnetic" href={`mailto:${site.email}`}>{t.contact.email} <span aria-hidden="true">↗</span></a>
           <a class="btn btn--ghost magnetic" href={site.whatsapp} target="_blank" rel="noopener">{t.contact.wa}</a>
+          <a class="btn btn--ghost magnetic" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
           <a class="btn btn--ghost magnetic" href={site.github} target="_blank" rel="noopener">GitHub</a>
         </div>
         <p class="mono muted contact__mail">{site.email} · {site.phone}</p>
