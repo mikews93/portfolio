@@ -287,7 +287,7 @@ export const t = {
       title: 'Para siempre',
       sub: 'Primer sencillo · Pop latino',
       date: 'Llega el 26 de noviembre de 2026',
-      text: 'Una canción para la persona que uno escoge todos los días. Mi primer sencillo como intérprete.',
+      text: 'Mis canciones son momentos. «Para siempre» es el primero, y pronto vivirán todos en musica.migueblanco.com, con la historia detrás de cada una.',
       soon: 'Próximamente en todas las plataformas',
     },
     contact: {
@@ -339,7 +339,7 @@ export const t = {
       title: 'Para siempre',
       sub: 'Debut single · Latin pop',
       date: 'Out November 26, 2026',
-      text: 'A song for the person you choose every day. My debut single as a performer.',
+      text: 'My songs are moments. «Para siempre» is the first one, and soon they will all live at musica.migueblanco.com, with the story behind each.',
       soon: 'Coming soon to every platform',
     },
     contact: {
@@ -358,11 +358,4 @@ export const skills = [
   { g: 'Frontend', items: ['React 19', 'TypeScript', 'Astro', 'React Native · Expo', 'Three.js', 'GSAP', 'Tailwind'] },
   { g: 'Backend', items: ['Node · Bun', 'NestJS', 'tRPC', 'GraphQL', 'Go', 'Python · FastAPI', 'WebSockets'] },
   { g: 'Data & Cloud', items: ['Postgres', 'Drizzle', 'Supabase', 'AWS', 'Terraform', 'ECS Fargate', 'Vercel'] },
-];
-
-export const lyrics = [
-  'Así tomados de la mano,',
-  'como testigo nuestro Dios.',
-  'Quiero decirte que te amo,',
-  'que tú eres mi gran bendición.',
 ];

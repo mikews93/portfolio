@@ -5,7 +5,7 @@ import '@fontsource/instrument-serif/400-italic.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
-import { t as dict, projects, jobs, skills, lyrics, site, type Lang } from '../content';
+import { t as dict, projects, jobs, skills, site, type Lang } from '../content';
 
 interface Props {
   lang: Lang;
@@ -363,9 +363,6 @@ const person = {
             <h2 class="music__title serif"><span class="title-split">{t.music.title}</span></h2>
             <p class="mono muted">{t.music.sub}</p>
             <p class="music__date mono"><i></i>{t.music.date}</p>
-            <ol class="lyrics serif">
-              {lyrics.map((l) => <li>{l}</li>)}
-            </ol>
             <p class="fade-up">{t.music.text}</p>
             <p class="mono muted small">{t.music.soon}</p>
           </div>
