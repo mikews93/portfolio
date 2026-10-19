@@ -53,7 +53,7 @@ const person = {
     <meta property="og:image" content={`${site.url}/og.jpg`} />
     <meta name="twitter:card" content="summary_large_image" />
     <script type="application/ld+json" set:html={JSON.stringify(person)} />
-    <link rel="preload" as="image" href="/img/miguel.webp" />
+    <link rel="preload" as="image" href="/img/miguel-hero.webp" />
   </head>
   <body>
     <div class="loader" aria-hidden="true">
@@ -98,7 +98,13 @@ const person = {
 
     <main id="top">
       <!-- HERO -->
-      <section class="hero" data-sound="hero" data-shape="monogram" data-c1="#ff4a3d" data-c2="#f6d9c8" data-x="2.6" data-y="1.15" data-ym="2.1" data-s="0.62" data-sm="0.55">
+      <section class="hero" data-sound="hero" data-shape="sphere" data-c1="#ff4a3d" data-c2="#f6d9c8" data-x="2.35" data-y="0.85" data-xm="0.75" data-ym="1.75" data-s="0.62" data-sm="0.32" data-a="0.75">
+        <!-- Layered hero (ScrollCraft hero-depth): back word, you, the headline, front haze. -->
+        <span class="hero__backword" aria-hidden="true">Blanco</span>
+        <figure class="hero__subject">
+          <img src="/img/miguel-hero.webp" alt="Miguel Blanco" width="900" height="1076" fetchpriority="high" />
+        </figure>
+        <div class="hero__haze" aria-hidden="true"></div>
         <p class="hero__eyebrow mono">{t.hero.eyebrow}</p>
         <h1 class="hero__title">
           <span class="hero__line"><span class="inner">{t.hero.line1}</span></span>
@@ -116,10 +122,6 @@ const person = {
       <!-- MANIFESTO -->
       <section class="manifesto" data-sound="manifesto" data-shape="galaxy" data-c1="#ff4a3d" data-c2="#7a6cff" data-x="-3.1" data-s="0.95" data-sm="0.9" data-am="0.5">
         <div class="manifesto__grid">
-          <figure class="portrait fade-up">
-            <img src="/img/miguel.webp" alt="Miguel Blanco" width="900" height="1794" loading="lazy" />
-            <figcaption class="mono">Miguel Antonio Blanco Salcedo</figcaption>
-          </figure>
           <p class="manifesto__text">{t.manifesto}</p>
         </div>
       </section>

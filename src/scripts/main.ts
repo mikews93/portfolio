@@ -102,10 +102,35 @@ function intro(ready: Promise<unknown>) {
   });
 }
 
+/* ---------- Layered hero: each plane leaves at its own speed ---------- */
+function heroDepth() {
+  const hero = $('.hero');
+  if (!hero || reduced) return;
+  const st = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
+  gsap.to('.hero__backword', { yPercent: -8, scale: 0.94, ease: 'none', scrollTrigger: st });
+  gsap.to('.hero__subject', { y: () => -innerHeight * 0.22, scale: 1.06, transformOrigin: '50% 100%', ease: 'none', scrollTrigger: st });
+  gsap.to('.hero__title, .hero__tail', { y: () => -innerHeight * 0.38, ease: 'none', scrollTrigger: st });
+  // The haze stays anchored to the bottom so the waist cut never shows.
+  gsap.fromTo('.hero__haze', { opacity: 0.85 }, { opacity: 1, ease: 'none', scrollTrigger: st });
+  gsap.to('.hero__eyebrow, .hero__meta', { autoAlpha: 0, y: -40, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: '35% top', scrub: true } });
+  // The subject arrives first, as the preloader lifts.
+  gsap.from('.hero__subject', { yPercent: 18, autoAlpha: 0, duration: 1.6, ease: 'expo.out', delay: 1.4 });
+  gsap.from('.hero__backword', { xPercent: 12, autoAlpha: 0, duration: 2, ease: 'expo.out', delay: 1.2 });
+  if (!finePointer) return;
+  // A little parallax with the pointer; near planes move more.
+  const planes: [string, number][] = [['.hero__backword', -10], ['.hero__subject', 16], ['.hero__haze', 24]];
+  const movers = planes.map(([sel, k]) => [gsap.quickTo(sel, 'x', { duration: 1, ease: 'power3' }), k] as const);
+  addEventListener('pointermove', (e) => {
+    if (scrollY > innerHeight) return;
+    const px = e.clientX / innerWidth - 0.5;
+    movers.forEach(([to, k]) => to(px * k));
+  });
+}
+
 /* ---------- Kinetic type: titles lean into the scroll ---------- */
 function kinetic() {
   if (reduced) return;
-  const els = $$('.hero__title, .section-title, .work__title, .panel__name, .contact__big, .music__title');
+  const els = $$('.section-title, .work__title, .panel__name, .contact__big, .music__title');
   const setters = els.map((el) => gsap.quickTo(el, 'skewY', { duration: 0.6, ease: 'power3.out' }));
   const settle = gsap.delayedCall(0.15, () => setters.forEach((f) => f(0))).pause();
   ScrollTrigger.create({
@@ -147,7 +172,7 @@ async function scene() {
         shape: d.shape as Shape,
         c1: new THREE.Color(d.c1 ?? '#ff4a3d'),
         c2: new THREE.Color(d.c2 ?? '#f1ece4'),
-        x: mobile ? 0 : Number(d.x ?? 0),
+        x: mobile ? Number(d.xm ?? 0) : Number(d.x ?? 0),
         yo: Number((mobile ? d.ym : d.y) ?? 0),
         s: Number((mobile ? d.sm : d.s) ?? 1),
         a: Number((mobile ? (d.am ?? d.a) : d.a) ?? 1),
@@ -587,6 +612,7 @@ intro(sceneReady);
 work();
 reveals();
 kinetic();
+heroDepth();
 breathe();
 timeline();
 lens();
