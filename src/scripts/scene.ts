@@ -315,7 +315,9 @@ export function createScene(canvas: HTMLCanvasElement, opts: { reduced: boolean 
       const ox = a.x + (b.x - a.x) * k;
       const sc = a.s + (b.s - a.s) * k;
       uniforms.uAlpha.value += (a.a + (b.a - a.a) * k - uniforms.uAlpha.value) * 0.1;
-      group.position.x += (ox - group.position.x) * 0.08;
+      // Offsets were tuned at 16:10; narrower screens pull shapes toward the centre.
+      const fit = Math.min(1.2, Math.max(0.55, camera.aspect / 1.6));
+      group.position.x += (ox * fit - group.position.x) * 0.08;
       const oy = a.yo + (b.yo - a.yo) * k;
       group.position.y += (oy - group.position.y) * 0.08;
       const s = sc * (0.6 + 0.4 * easeOut(intro));

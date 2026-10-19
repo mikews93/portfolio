@@ -162,9 +162,7 @@ async function scene() {
     const panels = $$('.work__track [data-shape]');
     const st = workTrigger;
     if (st && desktop) {
-      const track = $('.work__track')!;
-      const dist = Math.max(1, track.scrollWidth - innerWidth);
-      panels.forEach((p) => add(st.start + Math.min(1, p.offsetLeft / dist) * (st.end - st.start) - 40, p));
+      panels.forEach((p, k) => add(st.start + (k / Math.max(1, panels.length - 1)) * (st.end - st.start) - 40, p));
     } else panels.forEach((p) => add(p.getBoundingClientRect().top + scrollY - innerHeight * 0.3, p));
     s.setStops(stops);
   };
@@ -184,27 +182,60 @@ function work() {
   const pin = $('.work__pin');
   if (!track || !pin) return;
   if (desktop && !reduced) {
-    const dist = () => track.scrollWidth - innerWidth;
-    const tween = gsap.to(track, {
-      x: () => -dist(),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: pin,
-        pin: true,
-        scrub: 0.6,
-        end: () => `+=${dist()}`,
-        invalidateOnRefresh: true,
-        onUpdate: (st) => {
-          const bar = $('.work__progress i');
-          if (bar) bar.style.transform = `scaleX(${st.progress})`;
-          const idx = Math.round(st.progress * ($$('.panel').length - 1));
-          const cur = $('.work__count b');
-          if (cur) cur.textContent = String(idx + 1).padStart(2, '0');
-        },
+    // A camera journey in depth: projects sit one behind another along Z and
+    // the scroll flies the viewer through them.
+    document.documentElement.classList.add('z-journey');
+    const panels = $$('.panel');
+    const n = panels.length;
+    const depth = () => Math.max(1500, innerWidth * 1.15);
+    const per = () => innerHeight * 1.15;
+    const medias = panels.map((p) => $('.panel__media', p));
+    let target = 0;
+    let cur = 0;
+    let lastIdx = 0;
+    const st = ScrollTrigger.create({
+      trigger: pin,
+      pin: true,
+      start: 'top top',
+      end: () => `+=${per() * (n - 1)}`,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        // Hold each project in focus for most of its scroll, then fly to the next.
+        const x = self.progress * (n - 1);
+        const i = Math.floor(x);
+        const f = x - i;
+        const t = f < 0.3 ? 0 : f > 0.7 ? 1 : ((f - 0.3) / 0.4) ** 2 * (3 - 2 * ((f - 0.3) / 0.4));
+        target = Math.min(n - 1, i + t);
       },
     });
-    workTrigger = tween.scrollTrigger!;
-    // Media ripples like liquid when the gallery moves fast or on hover.
+    workTrigger = st;
+    const layout = () => {
+      cur += (target - cur) * 0.1;
+      if (Math.abs(target - cur) < 0.0005) cur = target;
+      const D = depth();
+      panels.forEach((p, k) => {
+        const rel = cur - k;
+        const o = rel < 0 ? Math.max(0, 1 + rel / 1.1) : Math.max(0, 1 - rel * 4);
+        p.style.transform = `translate3d(0, 0, ${(rel * D).toFixed(1)}px)`;
+        p.style.opacity = o.toFixed(3);
+        p.style.visibility = o < 0.01 ? 'hidden' : 'visible';
+        p.style.pointerEvents = Math.abs(rel) < 0.45 ? 'auto' : 'none';
+        medias[k]?.style.setProperty('--ry', `${(rel * -28).toFixed(2)}deg`);
+        medias[k]?.style.setProperty('--rx', `${(rel * 8).toFixed(2)}deg`);
+      });
+      const idx = Math.round(cur);
+      const bar = $('.work__progress i');
+      if (bar) bar.style.transform = `scaleX(${cur / (n - 1)})`;
+      const count = $('.work__count b');
+      if (count) count.textContent = String(idx + 1).padStart(2, '0');
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        dispatchEvent(new CustomEvent('mb:whoosh'));
+      }
+    };
+    layout();
+    gsap.ticker.add(layout);
+    // Media ripples like liquid when the journey moves fast or on hover.
     const disp = document.querySelector('#liquid feDisplacementMap');
     if (disp) {
       const o = { v: 0, hover: 0 };
@@ -212,41 +243,14 @@ function work() {
       ScrollTrigger.create({
         trigger: pin,
         start: 'top top',
-        end: () => `+=${dist()}`,
-        onUpdate: (st) => gsap.to(o, { v: Math.min(90, Math.abs(st.getVelocity()) / 25), duration: 0.3, overwrite: true, onUpdate: apply, onComplete: () => void gsap.to(o, { v: 0, duration: 0.9, ease: 'power2.out', onUpdate: apply }) }),
+        end: () => `+=${per() * (n - 1)}`,
+        onUpdate: (self) => gsap.to(o, { v: Math.min(90, Math.abs(self.getVelocity()) / 25), duration: 0.3, overwrite: true, onUpdate: apply, onComplete: () => void gsap.to(o, { v: 0, duration: 0.9, ease: 'power2.out', onUpdate: apply }) }),
       });
       $$('.panel__media').forEach((m) => {
-        m.addEventListener('pointerenter', () => gsap.to(o, { hover: 28, duration: 0.6, onUpdate: apply }));
+        m.addEventListener('pointerenter', () => gsap.to(o, { hover: 22, duration: 0.6, onUpdate: apply }));
         m.addEventListener('pointerleave', () => gsap.to(o, { hover: 0, duration: 0.8, onUpdate: apply }));
       });
     }
-    // Giant outlined numbers drift at their own speed: depth between layers.
-    $$('.panel__ghost').forEach((g) =>
-      gsap.fromTo(g, { xPercent: 35 }, { xPercent: -35, ease: 'none', scrollTrigger: { trigger: g.parentElement!, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } }),
-    );
-    $$('.panel').forEach((p) => {
-      gsap.from($$('.reveal', p), {
-        y: 60,
-        autoAlpha: 0,
-        stagger: 0.06,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left 70%', end: 'left 20%', scrub: 0.8 },
-      });
-      const inner = $('.panel__media > *', p);
-      if (inner)
-        gsap.fromTo(
-          inner,
-          { clipPath: 'inset(-30% -80% -30% 100%)' },
-          { clipPath: 'inset(-30% -80% -30% -80%)', ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left 95%', end: 'left 30%', scrub: true } },
-        );
-      const media = $('.panel__media', p);
-      if (media)
-        gsap.fromTo(
-          media,
-          { rotateY: -18, rotateX: 6, scale: 0.88 },
-          { rotateY: 8, rotateX: -2, scale: 1, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } },
-        );
-    });
   } else {
     $$('.panel').forEach((p) =>
       gsap.from($$('.reveal', p), { y: 40, autoAlpha: 0, stagger: 0.06, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: p, start: 'top 75%' } }),
@@ -283,11 +287,17 @@ function reveals() {
       onUpdate: () => (el.textContent = Math.round(o.v).toLocaleString(document.documentElement.lang)),
     });
   });
-  // Experience rows.
-  $$('.job').forEach((row) => {
-    gsap.from(row, { clipPath: 'inset(0 0 100% 0)', y: 40, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: row, start: 'top 85%' } });
-    gsap.from($('.job__line', row), { scaleX: 0, transformOrigin: 'left', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: row, start: 'top 90%' } });
-  });
+  // Experience: each stop slides up as it arrives.
+  $$('.job').forEach((row) =>
+    gsap.from($$('.job__head, .job__company, .job__role, .job__promo, .job__text, .job__metrics > div, .chips', row), {
+      y: 40,
+      autoAlpha: 0,
+      stagger: 0.06,
+      duration: 1,
+      ease: 'expo.out',
+      scrollTrigger: { trigger: row, start: 'top 80%' },
+    }),
+  );
   // Skills marquee speed follows scroll velocity.
   $$('.marquee__row').forEach((row, i) => {
     const dir = i % 2 ? 1 : -1;
@@ -317,6 +327,87 @@ function reveals() {
     { yPercent: 120, rotate: 8 },
     { yPercent: 0, rotate: 0, stagger: 0.04, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.contact__big', start: 'top 90%', toggleActions: 'play none none reverse' } },
   );
+}
+
+/* ---------- Experience timeline: the year rolls as each stop takes focus ---------- */
+function timeline() {
+  const rows = $$<HTMLElement>('.job');
+  if (!rows.length) return;
+  const year = $('.timeline__year span');
+  const company = $('.timeline__company');
+  const dots = $$('.timeline__rail b');
+  let active = -1;
+  const activate = (i: number) => {
+    if (i === active) return;
+    const dir = i > active ? 1 : -1;
+    active = i;
+    rows.forEach((r, k) => r.classList.toggle('is-active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k <= i));
+    const r = rows[i];
+    if (company) company.textContent = r.dataset.company ?? '';
+    if (year) {
+      if (reduced) year.textContent = r.dataset.from ?? '';
+      else
+        gsap
+          .timeline()
+          .to(year, { yPercent: -110 * dir, duration: 0.22, ease: 'power2.in', overwrite: true })
+          .add(() => (year.textContent = r.dataset.from ?? ''))
+          .fromTo(year, { yPercent: 110 * dir }, { yPercent: 0, duration: 0.6, ease: 'expo.out' });
+    }
+    dispatchEvent(new CustomEvent('mb:tick', { detail: i }));
+  };
+  rows.forEach((r, i) =>
+    ScrollTrigger.create({ trigger: r, start: 'top 60%', end: 'bottom 60%', onToggle: (st) => st.isActive && activate(i) }),
+  );
+  const fill = $('.timeline__fill');
+  if (fill) gsap.to(fill, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.jobs', start: 'top 60%', end: 'bottom 60%', scrub: true } });
+}
+
+/* ---------- Lens: a liquid magnifier follows the cursor over project media ---------- */
+function lens() {
+  if (!finePointer || reduced || !desktop) return;
+  const img = document.querySelector('#lens feImage');
+  if (!img) return;
+  const S = 256;
+  const c = document.createElement('canvas');
+  c.width = c.height = S;
+  const g = c.getContext('2d')!;
+  const data = g.createImageData(S, S);
+  for (let y = 0; y < S; y++)
+    for (let x = 0; x < S; x++) {
+      const dx = (x - S / 2) / (S / 2);
+      const dy = (y - S / 2) / (S / 2);
+      const r = Math.hypot(dx, dy);
+      const f = r < 1 ? Math.pow(1 - r * r, 1.5) : 0;
+      // Bulge plus a slight swirl, encoded around neutral grey (128).
+      const i = (y * S + x) * 4;
+      data.data[i] = 128 + (dx * 0.9 - dy * 0.35) * f * 127;
+      data.data[i + 1] = 128 + (dy * 0.9 + dx * 0.35) * f * 127;
+      data.data[i + 2] = 128;
+      data.data[i + 3] = 255;
+    }
+  g.putImageData(data, 0, 0);
+  img.setAttribute('href', c.toDataURL());
+  const size = 260;
+  img.setAttribute('width', String(size));
+  img.setAttribute('height', String(size));
+  const pos = { x: -9999, y: -9999 };
+  const xTo = gsap.quickTo(pos, 'x', { duration: 0.35, ease: 'power3', onUpdate: () => img.setAttribute('x', String(pos.x - size / 2)) });
+  const yTo = gsap.quickTo(pos, 'y', { duration: 0.35, ease: 'power3', onUpdate: () => img.setAttribute('y', String(pos.y - size / 2)) });
+  $$('.panel__media > *').forEach((el) => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      // Filter space is the element's own (untransformed) box.
+      const sx = el.offsetWidth / r.width;
+      const sy = el.offsetHeight / r.height;
+      xTo((e.clientX - r.left) * sx);
+      yTo((e.clientY - r.top) * sy);
+    });
+    el.addEventListener('pointerleave', () => {
+      gsap.set(pos, { x: -9999, y: -9999 });
+      img.setAttribute('x', '-9999');
+    });
+  });
 }
 
 /* ---------- Breathing type: letters widen near the cursor (Archivo's wdth axis) ---------- */
@@ -417,11 +508,22 @@ function sound() {
   const btn = $<HTMLButtonElement>('.nav__sound');
   if (!btn) return;
   const snd = createSound();
-  btn.addEventListener('click', () => {
-    const on = snd.toggle();
-    btn.setAttribute('aria-pressed', String(on));
-    btn.classList.toggle('is-on', on);
-  });
+  const toggles = [btn, ...$$<HTMLButtonElement>('[data-sound-toggle]')];
+  const label = $('[data-sound-toggle]');
+  const onText = document.documentElement.lang === 'es' ? 'Sonido encendido' : 'Sound on';
+  const offText = label?.textContent ?? '';
+  toggles.forEach((t) =>
+    t.addEventListener('click', () => {
+      const on = snd.toggle();
+      toggles.forEach((x) => {
+        x.setAttribute('aria-pressed', String(on));
+        x.classList.toggle('is-on', on);
+      });
+      if (label) label.textContent = on ? onText : offText;
+    }),
+  );
+  addEventListener('mb:whoosh', () => snd.whoosh());
+  addEventListener('mb:tick', (e) => snd.tick((e as CustomEvent<number>).detail));
   const targets = $$('a, button, .chips li, .job, .marquee__set span, .lyrics li');
   targets.forEach((el, i) => el.addEventListener('pointerenter', () => snd.pluck(i, el.matches('.job') ? 0.7 : 0.45)));
   $$('a, button').forEach((el, i) => el.addEventListener('click', () => snd.pluck(i + 2, 0.8)));
@@ -465,6 +567,8 @@ work();
 reveals();
 kinetic();
 breathe();
+timeline();
+lens();
 pointer();
 nav();
 sound();

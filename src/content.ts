@@ -65,7 +65,7 @@ export const projects: Project[] = [
     color: '#E8A06A',
     accent: '#B4501A',
     year: '2026',
-    url: 'https://biblia-de-estudio-eight.vercel.app',
+    url: 'https://biblia.migueblanco.com',
     status: { es: 'Beta pública', en: 'Public beta' },
     kicker: { es: 'Estudio bíblico profundo con IA', en: 'Deep Bible study with AI' },
     pitch: {
@@ -124,7 +124,7 @@ export const projects: Project[] = [
     color: '#FF7A5C',
     accent: '#F2B544',
     year: '2026',
-    url: 'https://hoy-vemos-flame.vercel.app',
+    url: 'https://hoyvemos.migueblanco.com',
     status: { es: 'App instalable', en: 'Installable app' },
     kicker: { es: 'Qué ver hoy en pareja', en: 'What to watch tonight, together' },
     pitch: {
@@ -151,6 +151,8 @@ export const projects: Project[] = [
 
 export type Job = {
   from: string;
+  promo?: Record<Lang, string>;
+  metrics?: { n: string; l: Record<Lang, string> }[];
   to: Record<Lang, string>;
   company: string;
   role: Record<Lang, string>;
@@ -164,12 +166,17 @@ export const jobs: Job[] = [
     from: '2026',
     to: { es: 'Hoy', en: 'Now' },
     company: 'Hoag Health System',
-    role: { es: 'Senior Backend Engineer', en: 'Senior Backend Engineer' },
+    role: { es: 'AI Engineer', en: 'AI Engineer' },
+    promo: { es: 'AI Engineer desde septiembre 2026 · antes Senior Backend Engineer', en: 'AI Engineer since September 2026 · previously Senior Backend Engineer' },
     place: 'Remoto · California, EE. UU.',
     text: {
-      es: 'Plataforma de telemedicina con comunicación en tiempo real entre pacientes y médicos. Integré AWS Bedrock para automatizar el triaje clínico y orquesto agentes de IA en Python con las APIs del backend, con manejo de datos HIPAA e integración con el EHR de Epic.',
-      en: 'Telemedicine platform with real-time patient–provider communication. I integrated AWS Bedrock to automate clinical triage and orchestrate Python AI agents with the backend APIs, with HIPAA-compliant data handling and Epic EHR integration.',
+      es: 'Construyo IA clínica para una plataforma de telemedicina con comunicación en tiempo real entre pacientes y médicos. Integré AWS Bedrock para automatizar el triaje y orquesto agentes de IA en Python con las APIs del backend, con datos protegidos bajo HIPAA e integración con el EHR de Epic.',
+      en: 'I build clinical AI for a telemedicine platform with real-time patient and provider communication. I integrated AWS Bedrock to automate triage and orchestrate Python AI agents with the backend APIs, with HIPAA-compliant data handling and Epic EHR integration.',
     },
+    metrics: [
+      { n: 'Bedrock', l: { es: 'triaje clínico automatizado', en: 'automated clinical triage' } },
+      { n: 'HIPAA', l: { es: 'datos de pacientes protegidos', en: 'protected patient data' } },
+    ],
     tags: ['Python', 'AWS Bedrock', 'AI agents', 'HIPAA', 'Epic EHR'],
   },
   {
@@ -182,6 +189,10 @@ export const jobs: Job[] = [
       es: 'Diseño, construyo y opero un SaaS de salud con IA de punta a punta: producto, arquitectura, infraestructura en AWS, agentes de IA, facturación electrónica y salida al mercado.',
       en: 'I design, build and run an AI healthcare SaaS end to end: product, architecture, AWS infrastructure, AI agents, e-invoicing and go-to-market.',
     },
+    metrics: [
+      { n: '1.700+', l: { es: 'commits en ocho meses', en: 'commits in eight months' } },
+      { n: '3', l: { es: 'idiomas: español, inglés y portugués', en: 'languages: Spanish, English, Portuguese' } },
+    ],
     tags: ['AI agents', 'AWS', 'Product'],
   },
   {
@@ -194,6 +205,10 @@ export const jobs: Job[] = [
       es: 'Lideré la reescritura completa del producto: la nueva experiencia redujo la curva de aprendizaje un 30 % y los hooks y componentes reutilizables subieron la eficiencia del equipo un 25 %. Construí y mantuve la API en Go y el paquete de WebSockets que conecta el dashboard con las máquinas de AWS.',
       en: 'Led the complete rewrite of the product: the new UX cut the learning curve by 30% and reusable hooks and components raised team efficiency by 25%. Built and maintained the Go API and the WebSocket package linking the dashboard to AWS machines.',
     },
+    metrics: [
+      { n: '-30 %', l: { es: 'curva de aprendizaje', en: 'learning curve' } },
+      { n: '+25 %', l: { es: 'eficiencia del equipo', en: 'team efficiency' } },
+    ],
     tags: ['React', 'TypeScript', 'Node', 'Go', 'WebSockets'],
   },
   {
@@ -206,6 +221,7 @@ export const jobs: Job[] = [
       es: 'Lideré un equipo de 4 desarrolladores en una plataforma de video educativo: sistema de autenticación, componentes de video y funcionalidades frontend escalables con React.',
       en: 'Led a team of 4 developers on a video education platform: authentication system, video components and scalable frontend features in React.',
     },
+    metrics: [{ n: '4', l: { es: 'desarrolladores a cargo', en: 'developers led' } }],
     tags: ['React', 'JavaScript', 'Leadership'],
   },
   {
@@ -230,6 +246,7 @@ export const jobs: Job[] = [
       es: 'Reconstruí aplicaciones con frameworks modernos de JavaScript para miles de profesionales de la salud en EE. UU. (Evercheck). Hice code reviews y guié técnicamente a los nuevos integrantes del equipo.',
       en: 'Rebuilt applications with modern JavaScript frameworks for thousands of US healthcare professionals (Evercheck). Did code reviews and gave technical guidance to new team members.',
     },
+    metrics: [{ n: '1.000s', l: { es: 'profesionales de la salud en EE. UU.', en: 'US healthcare professionals' } }],
     tags: ['JavaScript', 'React', 'Node', 'AWS'],
   },
   {
@@ -255,7 +272,8 @@ export const t = {
     },
     nav: { work: 'Proyectos', path: 'Trayectoria', music: 'Música', contact: 'Contacto', switch: 'EN', switchHref: '/en/' },
     hero: {
-      eyebrow: 'Senior Full Stack Engineer · Fundador de Deus Rex · Cantautor',
+      eyebrow: 'AI Engineer · Fundador de Deus Rex · Cantautor',
+      sound: 'Enciende el sonido',
       line1: 'Construyo',
       line2: 'software que',
       line3: 'piensa',
@@ -272,7 +290,7 @@ export const t = {
       { n: 2, suffix: '', label: 'idiomas: español nativo, inglés C2' },
     ],
     work: { kicker: 'Proyectos recientes', title: 'Cosas que estoy construyendo', visit: 'Visitar', private: 'Uso privado', drag: 'Sigue bajando' },
-    path: { kicker: 'Trayectoria', title: 'De Cartagena al mundo' },
+    path: { kicker: 'Trayectoria', title: 'De Cartagena al mundo', now: 'Hoy', years: 'años', scroll: 'Doce años en siete paradas' },
     edu: {
       title: 'Formación',
       items: [
@@ -307,7 +325,8 @@ export const t = {
     },
     nav: { work: 'Work', path: 'Experience', music: 'Music', contact: 'Contact', switch: 'ES', switchHref: '/' },
     hero: {
-      eyebrow: 'Senior Full Stack Engineer · Founder of Deus Rex · Songwriter',
+      eyebrow: 'AI Engineer · Founder of Deus Rex · Songwriter',
+      sound: 'Turn the sound on',
       line1: 'I build',
       line2: 'software that',
       line3: 'thinks',
@@ -324,7 +343,7 @@ export const t = {
       { n: 2, suffix: '', label: 'languages: native Spanish, C2 English' },
     ],
     work: { kicker: 'Recent work', title: 'Things I’m building', visit: 'Visit', private: 'Private use', drag: 'Keep scrolling' },
-    path: { kicker: 'Experience', title: 'From Cartagena to the world' },
+    path: { kicker: 'Experience', title: 'From Cartagena to the world', now: 'Now', years: 'years', scroll: 'Twelve years in seven stops' },
     edu: {
       title: 'Education',
       items: [

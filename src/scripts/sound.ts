@@ -1,7 +1,9 @@
 /**
- * Opt-in UI sound, synthesised live with the Web Audio API (no audio files).
- * Hovers pluck notes from a G-major pentatonic; settling on a new section
- * plays a soft chord. Nothing sounds until the visitor turns it on.
+ * Opt-in sound, synthesised live with the Web Audio API (no audio files).
+ * Hovers pluck notes from a G-major pentatonic, every new section plays a soft
+ * chord, the project journey whooshes past, each career stop ticks, and a low
+ * pad breathes underneath while sound is on. Nothing sounds until the visitor
+ * turns it on.
  */
 const SCALE = [196.0, 220.0, 246.94, 293.66, 329.63, 392.0, 440.0, 493.88, 587.33, 659.25, 783.99];
 
@@ -9,6 +11,8 @@ export function createSound() {
   let ctx: AudioContext | null = null;
   let master: GainNode;
   let wet: GainNode;
+  let pad: GainNode;
+  let noise: AudioBuffer;
   let on = false;
   const lastAt = new Map<number, number>();
 
@@ -29,6 +33,32 @@ export function createSound() {
     delay.connect(feedback).connect(delay);
     delay.connect(tone).connect(master);
     master.connect(ctx.destination);
+
+    // White noise for whooshes.
+    noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+    const d = noise.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+
+    // A quiet, slowly breathing pad on G and D.
+    pad = ctx.createGain();
+    pad.gain.value = 0;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 600;
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = 0.07;
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.value = 250;
+    lfo.connect(lfoGain).connect(lp.frequency);
+    lfo.start();
+    [98, 98.6, 146.83, 196].forEach((f) => {
+      const o = ctx!.createOscillator();
+      o.type = 'sawtooth';
+      o.frequency.value = f;
+      o.connect(lp);
+      o.start();
+    });
+    lp.connect(pad).connect(master);
   }
 
   function note(freq: number, vel: number, when = 0, len = 1.1, type: OscillatorType = 'triangle') {
@@ -52,9 +82,16 @@ export function createSound() {
     toggle() {
       on = !on;
       if (on && !ctx) init();
+      if (!ctx) return on;
+      const t = ctx.currentTime;
       if (on) {
-        ctx?.resume();
+        ctx.resume();
+        pad.gain.cancelScheduledValues(t);
+        pad.gain.linearRampToValueAtTime(0.05, t + 2.5);
         [0, 2, 4].forEach((d, k) => note(SCALE[d + 3], 0.25, k * 0.07, 1.8));
+      } else {
+        pad.gain.cancelScheduledValues(t);
+        pad.gain.linearRampToValueAtTime(0, t + 0.6);
       }
       return on;
     },
@@ -69,6 +106,29 @@ export function createSound() {
       if (!on || !ctx) return;
       const root = i % 5;
       [0, 2, 4].forEach((d, k) => note(SCALE[root + d] / 2, 0.16, k * 0.04, 2.4, 'sine'));
+    },
+    whoosh() {
+      if (!on || !ctx) return;
+      const t = ctx.currentTime;
+      const src = ctx.createBufferSource();
+      src.buffer = noise;
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.Q.value = 1.4;
+      bp.frequency.setValueAtTime(300, t);
+      bp.frequency.exponentialRampToValueAtTime(2800, t + 0.35);
+      bp.frequency.exponentialRampToValueAtTime(500, t + 0.8);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.5, t + 0.3);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.85);
+      src.connect(bp).connect(g).connect(master);
+      src.start(t);
+      src.stop(t + 0.9);
+    },
+    tick(i: number) {
+      if (!on || !ctx) return;
+      note(SCALE[(SCALE.length - 1 - i) % SCALE.length] * 2, 0.12, 0, 0.35, 'sine');
     },
   };
 }
