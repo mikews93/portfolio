@@ -5,13 +5,14 @@ import '@fontsource/instrument-serif/400-italic.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
-import { t as dict, projects, jobs, skills, site, type Lang } from '../content';
+import { t as dict, projects, jobs, skills, services as servicesDict, site, type Lang } from '../content';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = dict[lang];
+const sv = servicesDict[lang];
 const other = lang === 'es' ? 'en' : 'es';
 const canonical = lang === 'es' ? `${site.url}/` : `${site.url}/en/`;
 const year = new Date().getFullYear();
@@ -83,6 +84,7 @@ const person = {
       </a>
       <nav class="nav__links" aria-label="Main">
         <a href="#work">{t.nav.work}</a>
+        <a href="#services">{t.nav.services}</a>
         <a href="#path">{t.nav.path}</a>
         <a href="#music">{t.nav.music}</a>
         <a href="#contact">{t.nav.contact}</a>
@@ -290,6 +292,38 @@ const person = {
               ))
             }
           </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section class="services" id="services" data-sound="services" data-shape="wave" data-c1="#ff4a3d" data-c2="#ffb199" data-x="0" data-y="-0.4" data-s="1.15" data-sm="0.8" data-a="0.45" data-am="0.3">
+        <p class="kicker mono">{sv.kicker}</p>
+        <h2 class="section-title"><span class="title-split">{sv.title}</span></h2>
+        <p class="services__intro fade-up">{sv.intro}</p>
+        <ul class="services__grid">
+          {
+            sv.items.map((it) => (
+              <li class="service" data-hover>
+                <h3>{it.t}</h3>
+                <p>{it.d}</p>
+                <p class="service__proof mono">
+                  <span>{sv.proof}</span>
+                  {it.p}
+                </p>
+                <ul class="chips">
+                  {it.tags.map((x) => (
+                    <li>{x}</li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="services__cta fade-up">
+          <a class="btn btn--big magnetic" href={`mailto:${site.email}`}>
+            {sv.cta} <span aria-hidden="true">↗</span>
+          </a>
+          <a class="btn btn--ghost magnetic" href={site.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
         </div>
       </section>
 

@@ -272,6 +272,9 @@ function reveals() {
     const chars = splitChars(el);
     gsap.from(chars, { yPercent: 105, duration: 1, ease: 'expo.out', stagger: 0.02, scrollTrigger: { trigger: el, start: 'top 85%' } });
   });
+  $$('.service').forEach((el, i) =>
+    gsap.from(el, { y: 70, autoAlpha: 0, duration: 1.1, delay: (i % 2) * 0.12, ease: 'expo.out', scrollTrigger: { trigger: el, start: 'top 88%' } }),
+  );
   $$('.fade-up').forEach((el) =>
     gsap.from(el, { y: 50, autoAlpha: 0, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } }),
   );
@@ -408,6 +411,18 @@ function lens() {
       img.setAttribute('x', '-9999');
     });
   });
+}
+
+/* ---------- Service cards: a spotlight follows the cursor ---------- */
+function spotlight() {
+  if (!finePointer) return;
+  $$('.service').forEach((el) =>
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    }),
+  );
 }
 
 /* ---------- Breathing type: letters widen near the cursor (Archivo's wdth axis) ---------- */
@@ -575,6 +590,7 @@ kinetic();
 breathe();
 timeline();
 lens();
+spotlight();
 pointer();
 nav();
 sound();

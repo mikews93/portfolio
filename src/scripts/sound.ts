@@ -178,6 +178,11 @@ export function createSound() {
       note(hz(0, 784), 0.16, 0.85, 0.6);
       note(hz(7, 784), 0.16, 1.0, 1.2);
     },
+    // Services: a warm doorbell, come on in.
+    services: () => {
+      bell(hz(4, 392), 0.12);
+      bell(hz(0, 392), 0.12, 0.45);
+    },
     // Experience: a clock's tick-tock.
     path: () => {
       burst(0, 0.04, 0.4, 3200, 3000, 6);

@@ -270,7 +270,7 @@ export const t = {
       description:
         'Ingeniero de software con más de 12 años construyendo productos. Fundador de Deus Rex. Hago software con IA y canciones que se quedan.',
     },
-    nav: { work: 'Proyectos', path: 'Trayectoria', music: 'Música', contact: 'Contacto', switch: 'EN', switchHref: '/en/' },
+    nav: { work: 'Proyectos', services: 'Servicios', path: 'Trayectoria', music: 'Música', contact: 'Contacto', switch: 'EN', switchHref: '/en/' },
     hero: {
       eyebrow: 'AI Engineer · Fundador de Deus Rex · Cantautor',
       sound: 'Enciende el sonido',
@@ -324,7 +324,7 @@ export const t = {
       description:
         'Software engineer with 12+ years building products. Founder of Deus Rex. I make AI software and songs that stay.',
     },
-    nav: { work: 'Work', path: 'Experience', music: 'Music', contact: 'Contact', switch: 'ES', switchHref: '/' },
+    nav: { work: 'Work', services: 'Services', path: 'Experience', music: 'Music', contact: 'Contact', switch: 'ES', switchHref: '/' },
     hero: {
       eyebrow: 'AI Engineer · Founder of Deus Rex · Songwriter',
       sound: 'Turn the sound on',
@@ -380,3 +380,72 @@ export const skills = [
   { g: 'Backend', items: ['Node · Bun', 'NestJS', 'tRPC', 'GraphQL', 'Go', 'Python · FastAPI', 'WebSockets'] },
   { g: 'Data & Cloud', items: ['Postgres', 'Drizzle', 'Supabase', 'AWS', 'Terraform', 'ECS Fargate', 'Vercel'] },
 ];
+
+export const services = {
+  es: {
+    kicker: 'Servicios',
+    title: 'Qué hago por ti',
+    intro: 'Trabajo con empresas y equipos que necesitan llevar una idea a producción, meter IA donde de verdad sirve o poner orden en un producto que creció rápido.',
+    proof: 'Prueba',
+    cta: 'Cuéntame tu proyecto',
+    items: [
+      {
+        t: 'IA aplicada y agentes',
+        d: 'Agentes que atienden, agendan y deciden; RAG sobre tus documentos; voz; automatizaciones. Con evaluaciones y observabilidad para que no sea una demo bonita sino algo que funciona en producción.',
+        p: 'Triaje clínico con AWS Bedrock en Hoag · Sarai en Deus Rex',
+        tags: ['Claude', 'Bedrock AgentCore', 'RAG', 'Evals', 'ElevenLabs'],
+      },
+      {
+        t: 'Software para salud',
+        d: 'Historia clínica, agendamiento, telemedicina e integraciones, cumpliendo HIPAA en EE. UU. y la normativa colombiana (facturación DIAN, RIPS, Habeas Data).',
+        p: 'Hoag Health System · Deus Rex · Evercheck',
+        tags: ['HIPAA', 'Epic EHR', 'DIAN', 'RIPS'],
+      },
+      {
+        t: 'Producto de punta a punta',
+        d: 'De la idea al lanzamiento: arquitectura, frontend, backend, infraestructura en la nube y salida al mercado. Un solo responsable que entiende el negocio y el código.',
+        p: 'Deus Rex, Biblia de Estudio y Hoy Vemos en 2026',
+        tags: ['React', 'Node · Bun', 'AWS', 'Terraform', 'Vercel'],
+      },
+      {
+        t: 'Liderazgo y modernización',
+        d: 'Reescribir sistemas legados, pasar a microservicios o tiempo real, definir estándares y acompañar al equipo para que entregue más rápido y con menos errores.',
+        p: 'Reescritura de Videate: -30 % curva de aprendizaje, +25 % eficiencia',
+        tags: ['Arquitectura', 'Mentoría', 'Code review', 'WebSockets'],
+      },
+    ],
+  },
+  en: {
+    kicker: 'Services',
+    title: 'How I can help',
+    intro: 'I work with companies and teams that need to take an idea to production, put AI where it actually helps, or bring order to a product that grew fast.',
+    proof: 'Proof',
+    cta: 'Tell me about your project',
+    items: [
+      {
+        t: 'Applied AI and agents',
+        d: 'Agents that answer, book and decide; RAG over your documents; voice; automations. With evals and observability, so it is not a pretty demo but something that works in production.',
+        p: 'Clinical triage on AWS Bedrock at Hoag · Sarai at Deus Rex',
+        tags: ['Claude', 'Bedrock AgentCore', 'RAG', 'Evals', 'ElevenLabs'],
+      },
+      {
+        t: 'Healthcare software',
+        d: 'Medical records, scheduling, telemedicine and integrations, compliant with HIPAA in the US and Colombian regulation (DIAN e-invoicing, RIPS, Habeas Data).',
+        p: 'Hoag Health System · Deus Rex · Evercheck',
+        tags: ['HIPAA', 'Epic EHR', 'DIAN', 'RIPS'],
+      },
+      {
+        t: 'End-to-end product',
+        d: 'From idea to launch: architecture, frontend, backend, cloud infrastructure and go-to-market. One owner who understands both the business and the code.',
+        p: 'Deus Rex, Biblia de Estudio and Hoy Vemos in 2026',
+        tags: ['React', 'Node · Bun', 'AWS', 'Terraform', 'Vercel'],
+      },
+      {
+        t: 'Leadership and modernization',
+        d: 'Rewriting legacy systems, moving to microservices or real time, setting standards and coaching the team to ship faster with fewer bugs.',
+        p: 'Videate rewrite: -30% learning curve, +25% efficiency',
+        tags: ['Architecture', 'Mentoring', 'Code review', 'WebSockets'],
+      },
+    ],
+  },
+};

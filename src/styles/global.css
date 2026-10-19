@@ -1271,6 +1271,97 @@ section {
   }
 }
 
+/* ---------- Services ---------- */
+.services__intro {
+  font-size: clamp(20px, 2vw, 32px);
+  line-height: 1.25;
+  max-width: 34ch;
+  margin: -24px 0 clamp(48px, 8vh, 88px);
+  color: #e6dfd5;
+}
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(14px, 1.6vw, 24px);
+}
+.service {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(26px, 3vw, 48px);
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: rgba(18, 18, 22, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition:
+    border-color 0.5s var(--ease),
+    transform 0.6s var(--ease);
+}
+/* A spotlight follows the cursor inside each card. */
+.service::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(255, 74, 61, 0.2), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.service:hover {
+  border-color: rgba(255, 74, 61, 0.5);
+  transform: translateY(-4px);
+}
+.service:hover::before {
+  opacity: 1;
+}
+.service > * {
+  position: relative;
+}
+.service h3 {
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: clamp(26px, 2.4vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.service > p:not(.service__proof) {
+  color: #c9c2b8;
+  max-width: 52ch;
+}
+.service__proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: baseline;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  margin-top: auto;
+}
+.service__proof span {
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.services__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(40px, 6vh, 64px);
+}
+@media (max-width: 820px) {
+  .services__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- Experience ---------- */
 .path__sub {
   margin: -40px 0 56px;
