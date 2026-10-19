@@ -294,9 +294,10 @@ export const t = {
     edu: {
       title: 'Formación',
       items: [
-        { y: '2026', t: 'Máster en Soluciones de IA Generativa (candidato)', s: 'EUNEIZ · EBIS Business Techschool · España' },
-        { y: '2016', t: 'Ingeniería de Sistemas', s: 'Tecnológico Comfenalco · Cartagena' },
-        { y: '2013', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · Binghamton, NY' },
+        { y: '2026', t: 'Máster en Soluciones de IA Generativa', s: 'EUNEIZ · EBIS Business Techschool · España', d: 'Diseñar, automatizar y desplegar proyectos de IA generativa, de la idea a producción. Tesis: MarketMind AI, inteligencia comercial con agentes.', badge: 'En curso' },
+        { y: '2016', t: 'Ingeniería de Sistemas', s: 'Tecnológico Comfenalco · Cartagena', d: 'Ingeniería aplicada: crear soluciones tecnológicas, resolver problemas complejos y llevar la innovación a las empresas.' },
+        { y: '2013', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · Binghamton, Nueva York', d: 'Dos años en Estados Unidos estudiando programación, resolución de problemas y sistemas de cómputo.' },
+        { y: 'C2', t: 'Inglés certificado', s: 'EF SET', d: 'Nivel C2, el más alto del Marco Común Europeo.', href: 'https://www.efset.org/cert/SzoDbe' },
       ],
     },
     skills: { kicker: 'Caja de herramientas', title: 'Con qué construyo' },
@@ -347,9 +348,10 @@ export const t = {
     edu: {
       title: 'Education',
       items: [
-        { y: '2026', t: 'Master’s in Generative AI Solutions (candidate)', s: 'EUNEIZ · EBIS Business Techschool · Spain' },
-        { y: '2016', t: 'Bachelor’s in Systems Engineering', s: 'Tecnológico Comfenalco · Cartagena' },
-        { y: '2013', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · Binghamton, NY' },
+        { y: '2026', t: 'Master’s in Generative AI Solutions', s: 'EUNEIZ · EBIS Business Techschool · Spain', d: 'Designing, automating and deploying generative AI projects from concept to production. Thesis: MarketMind AI, agent-based market intelligence.', badge: 'In progress' },
+        { y: '2016', t: 'Bachelor’s in Systems Engineering', s: 'Tecnológico Comfenalco · Cartagena', d: 'Applied engineering: building technology solutions, solving complex problems and bringing innovation to companies.' },
+        { y: '2013', t: 'Associate’s Degree in Computer Science', s: 'SUNY Broome · Binghamton, New York', d: 'Two years in the United States studying programming, problem solving and computer systems.' },
+        { y: 'C2', t: 'Certified English', s: 'EF SET', d: 'C2, the highest level of the Common European Framework.', href: 'https://www.efset.org/cert/SzoDbe' },
       ],
     },
     skills: { kicker: 'Toolbox', title: 'What I build with' },

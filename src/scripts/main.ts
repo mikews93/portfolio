@@ -230,7 +230,7 @@ function work() {
       if (count) count.textContent = String(idx + 1).padStart(2, '0');
       if (idx !== lastIdx) {
         lastIdx = idx;
-        dispatchEvent(new CustomEvent('mb:whoosh'));
+        dispatchEvent(new CustomEvent('mb:whoosh', { detail: panels[idx]?.dataset.sound }));
       }
     };
     layout();
@@ -527,19 +527,25 @@ function sound() {
   const targets = $$('a, button, .chips li, .job, .marquee__set span, .lyrics li');
   targets.forEach((el, i) => el.addEventListener('pointerenter', () => snd.pluck(i, el.matches('.job') ? 0.7 : 0.45)));
   $$('a, button').forEach((el, i) => el.addEventListener('click', () => snd.pluck(i + 2, 0.8)));
-  // A soft chord each time the particles settle on a new shape.
-  let last = -1;
+  // Every section and project has its own signature sound, played as it takes the screen.
+  const zMode = () => document.documentElement.classList.contains('z-journey');
+  let last = '';
+  const play = (name?: string) => {
+    if (!name || name === last) return;
+    last = name;
+    snd.scene(name);
+  };
+  addEventListener('mb:whoosh', (e) => play((e as CustomEvent<string>).detail));
   ScrollTrigger.create({
     onUpdate: () => {
       if (!btn.classList.contains('is-on')) return;
-      const idx = $$('[data-shape]').findIndex((el) => {
-        const r = el.getBoundingClientRect();
-        return r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5 && r.left < innerWidth * 0.5 && r.right > innerWidth * 0.5;
+      const el = $$('[data-sound]').find((x) => {
+        if (zMode() && x.closest('.work__track')) return false;
+        const r = x.getBoundingClientRect();
+        return r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5;
       });
-      if (idx >= 0 && idx !== last) {
-        last = idx;
-        snd.chord(idx);
-      }
+      // Inside the pinned journey the panel events above decide.
+      if (el && !(zMode() && el.closest('.work'))) play(el.dataset.sound);
     },
   });
 }

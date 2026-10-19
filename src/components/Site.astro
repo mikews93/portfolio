@@ -96,7 +96,7 @@ const person = {
 
     <main id="top">
       <!-- HERO -->
-      <section class="hero" data-shape="monogram" data-c1="#ff4a3d" data-c2="#f6d9c8" data-x="2.6" data-y="1.15" data-ym="2.1" data-s="0.62" data-sm="0.55">
+      <section class="hero" data-sound="hero" data-shape="monogram" data-c1="#ff4a3d" data-c2="#f6d9c8" data-x="2.6" data-y="1.15" data-ym="2.1" data-s="0.62" data-sm="0.55">
         <p class="hero__eyebrow mono">{t.hero.eyebrow}</p>
         <h1 class="hero__title">
           <span class="hero__line"><span class="inner">{t.hero.line1}</span></span>
@@ -112,7 +112,7 @@ const person = {
       </section>
 
       <!-- MANIFESTO -->
-      <section class="manifesto" data-shape="galaxy" data-c1="#ff4a3d" data-c2="#7a6cff" data-x="-3.1" data-s="0.95" data-sm="0.9" data-am="0.5">
+      <section class="manifesto" data-sound="manifesto" data-shape="galaxy" data-c1="#ff4a3d" data-c2="#7a6cff" data-x="-3.1" data-s="0.95" data-sm="0.9" data-am="0.5">
         <div class="manifesto__grid">
           <figure class="portrait fade-up">
             <img src="/img/miguel.webp" alt="Miguel Blanco" width="900" height="1794" loading="lazy" />
@@ -123,7 +123,7 @@ const person = {
       </section>
 
       <!-- STATS -->
-      <section class="stats" data-shape="sphere" data-c1="#ff4a3d" data-c2="#f1ece4" data-x="0" data-s="1.1" data-sm="0.75" data-a="0.7">
+      <section class="stats" data-sound="stats" data-shape="sphere" data-c1="#ff4a3d" data-c2="#f1ece4" data-x="0" data-s="1.1" data-sm="0.75" data-a="0.7">
         {
           t.stats.map((s) => (
             <div class="stat fade-up">
@@ -146,7 +146,7 @@ const person = {
             <div class="work__progress"><i></i></div>
           </div>
           <div class="work__track">
-            <div class="panel panel--intro" data-shape="torus" data-c1="#2FC7A0" data-c2="#c9fff0" data-x="2.4" data-s="0.9" data-sm="0.6">
+            <div class="panel panel--intro" data-sound="work" data-shape="torus" data-c1="#2FC7A0" data-c2="#c9fff0" data-x="2.4" data-s="0.9" data-sm="0.6">
               <h2 class="work__title">{t.work.title}</h2>
               <p class="mono work__hint">{t.work.drag} →</p>
             </div>
@@ -156,6 +156,7 @@ const person = {
                   class={`panel panel--${p.id}`}
                   style={`--pc:${p.color};--pa:${p.accent}`}
                   data-shape={p.shape}
+                  data-sound={p.id}
                   data-c1={p.color}
                   data-c2={p.accent}
                   data-x="2.3"
@@ -293,7 +294,7 @@ const person = {
       </section>
 
       <!-- EXPERIENCE -->
-      <section class="path" id="path" data-shape="helix" data-c1="#ff4a3d" data-c2="#ffb199" data-x="5.6" data-s="0.75" data-sm="0.5" data-a="0.4" data-am="0.2">
+      <section class="path" data-sound="path" id="path" data-shape="helix" data-c1="#ff4a3d" data-c2="#ffb199" data-x="5.6" data-s="0.75" data-sm="0.5" data-a="0.4" data-am="0.2">
         <p class="kicker mono">{t.path.kicker}</p>
         <h2 class="section-title"><span class="title-split">{t.path.title}</span></h2>
         <p class="mono muted path__sub">{t.path.scroll}</p>
@@ -345,15 +346,24 @@ const person = {
             }
           </ol>
         </div>
-        <div class="edu fade-up">
+        <div class="edu">
           <h3 class="mono kicker">{t.edu.title}</h3>
-          <ul>
+          <ul class="edu__grid">
             {
-              t.edu.items.map((e) => (
-                <li>
-                  {e.y && <span class="mono">{e.y}</span>}
-                  <b>{e.t}</b>
-                  <span class="muted">{e.s}</span>
+              t.edu.items.map((e: any) => (
+                <li class="edu__card" data-hover>
+                  <span class="edu__year">{e.y}</span>
+                  <div class="edu__body">
+                    {e.badge && <span class="edu__badge mono"><i />{e.badge}</span>}
+                    <b>{e.t}</b>
+                    <span class="mono muted">{e.s}</span>
+                    <p>{e.d}</p>
+                    {e.href && (
+                      <a class="mono" href={e.href} target="_blank" rel="noopener">
+                        {lang === 'es' ? 'Ver certificado' : 'View certificate'} ↗
+                      </a>
+                    )}
+                  </div>
                 </li>
               ))
             }
@@ -362,7 +372,7 @@ const person = {
       </section>
 
       <!-- SKILLS -->
-      <section class="skills" data-shape="sphere" data-c1="#7a6cff" data-c2="#ff4a3d" data-x="0" data-s="1.3" data-sm="0.9" data-a="0.6">
+      <section class="skills" data-sound="skills" data-shape="sphere" data-c1="#7a6cff" data-c2="#ff4a3d" data-x="0" data-s="1.3" data-sm="0.9" data-a="0.6">
         <p class="kicker mono">{t.skills.kicker}</p>
         <h2 class="section-title"><span class="title-split">{t.skills.title}</span></h2>
         <div class="marquee" aria-hidden="true">
@@ -387,7 +397,7 @@ const person = {
       </section>
 
       <!-- MUSIC -->
-      <section class="music" id="music" data-shape="rings" data-c1="#d8b26e" data-c2="#fff1d6" data-x="-3.4" data-s="1.2" data-sm="0.75">
+      <section class="music" data-sound="music" id="music" data-shape="rings" data-c1="#d8b26e" data-c2="#fff1d6" data-x="-3.4" data-s="1.2" data-sm="0.75">
         <div class="music__grid">
           <div class="phone" data-tilt>
             <video autoplay muted loop playsinline preload="none" poster="/music/para-siempre.jpg">
@@ -413,7 +423,7 @@ const person = {
       </section>
 
       <!-- CONTACT -->
-      <section class="contact" id="contact" data-shape="monogram" data-c1="#ff4a3d" data-c2="#f1ece4" data-x="2.3" data-y="-1.3" data-ym="-3.4" data-s="0.7" data-sm="0.42" data-a="0.8" data-am="0.6">
+      <section class="contact" data-sound="contact" id="contact" data-shape="monogram" data-c1="#ff4a3d" data-c2="#f1ece4" data-x="2.3" data-y="-1.3" data-ym="-3.4" data-s="0.7" data-sm="0.42" data-a="0.8" data-am="0.6">
         <p class="kicker mono">{t.contact.kicker}</p>
         <h2 class="contact__big" aria-label={t.contact.title}>
           {[...t.contact.title].map((ch) => <span class="ch" aria-hidden="true">{ch === ' ' ? ' ' : ch}</span>)}
