@@ -65,7 +65,7 @@ export const projects: Project[] = [
     color: '#E8A06A',
     accent: '#B4501A',
     year: '2026',
-    url: 'https://biblia.migueblanco.com',
+    url: 'https://zarzabiblia.com',
     status: { es: 'Beta pública', en: 'Public beta' },
     kicker: { es: 'Estudio bíblico profundo con IA', en: 'Deep Bible study with AI' },
     pitch: {
