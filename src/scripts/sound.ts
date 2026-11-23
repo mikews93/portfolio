@@ -165,6 +165,18 @@ export function createSound() {
       note(988, 0.1, 0.55, 0.18, 'sine', false);
       note(988, 0.1, 1.55, 0.18, 'sine', false);
     },
+    // Rvela: a film cut, then a bright "ready" chime.
+    rvela: () => {
+      burst(0, 0.05, 0.5, 4000, 3000, 6);
+      burst(0.18, 0.05, 0.4, 4000, 3000, 6);
+      note(hz(0, 659.25), 0.14, 0.4, 0.5);
+      note(hz(5, 659.25), 0.14, 0.55, 1.0);
+    },
+    // Ruaj: three soft taps on the board, then a warm spoken-like hum.
+    ruaj: () => {
+      [0, 0.16, 0.32].forEach((w, k) => note(hz([0, 4, 7][k], 523.25), 0.1, w, 0.18, 'sine', false));
+      note(hz(0, 196), 0.12, 0.6, 1.2, 'sine');
+    },
     // Biblia: a church bell, twice.
     biblia: () => {
       bell(hz(0, 196), 0.22);

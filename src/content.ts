@@ -9,6 +9,25 @@ export const site = {
   github: 'https://github.com/mikews93',
 };
 
+/** The company that sells and bills every product listed here (Stripe shows its name on card statements as MBTECH). */
+export const company = {
+  name: 'MB Technology Solutions LLC',
+  short: 'MB Technology',
+  state: { es: 'Nuevo México, Estados Unidos', en: 'New Mexico, United States' },
+  registry: '0008106326',
+  address: '1209 Mountain Road Pl NE, Ste N, Albuquerque, NM 87110',
+  descriptor: 'MBTECH',
+};
+
+/** Each product's own legal pages; /terminos and /privacidad link to them. */
+export const legal: { name: string; url: string; terms?: string; privacy?: string }[] = [
+  { name: 'Rvela', url: 'https://rvela.app', terms: 'https://rvela.app/terminos', privacy: 'https://rvela.app/privacidad' },
+  { name: 'Deus Rex', url: 'https://deusrex.io', terms: 'https://deusrex.io/terms', privacy: 'https://deusrex.io/privacy' },
+  { name: 'Zarza', url: 'https://zarzabiblia.com', terms: 'https://zarzabiblia.com/terminos', privacy: 'https://zarzabiblia.com/privacidad' },
+  { name: 'Ruaj', url: 'https://ruajapp.com', terms: 'https://ruajapp.com/terminos.html', privacy: 'https://ruajapp.com/privacidad.html' },
+  { name: 'Hoy Vemos', url: 'https://hoyvemos.migueblanco.com', privacy: 'https://hoyvemos.migueblanco.com/privacidad' },
+];
+
 /** Scene shapes the WebGL particle field morphs into (see src/scripts/scene.ts). */
 export type Shape = 'monogram' | 'galaxy' | 'torus' | 'book' | 'wave' | 'venn' | 'rings' | 'helix' | 'sphere';
 
@@ -59,15 +78,45 @@ export const projects: Project[] = [
     stack: ['Bun', 'NestJS', 'tRPC', 'React 19', 'Postgres', 'Claude', 'Bedrock AgentCore', 'ElevenLabs', 'Terraform', 'ECS'],
   },
   {
+    id: 'rvela',
+    name: 'Rvela',
+    shape: 'galaxy',
+    color: '#3DD6C4',
+    accent: '#1A8F83',
+    year: '2026',
+    url: 'https://rvela.app',
+    status: { es: 'En producción', en: 'Live in production' },
+    kicker: { es: 'Editor de video con IA', en: 'AI video editor' },
+    pitch: {
+      es: 'Subes un video o escribes una idea y Rvela lo edita: corta silencios, subtitula, encuadra en vertical, agrega gráficos y tomas, y lo deja listo para publicar en tus redes.',
+      en: 'Upload a video or type an idea and Rvela edits it: cuts silences, adds captions, reframes to vertical, adds graphics and b-roll, and gets it ready to post on your socials.',
+    },
+    points: {
+      es: [
+        'De video largo a clips, o de guion a video con voz, música y tomas',
+        'Editor propio en el navegador: lo que ves es lo que sale',
+        'Carruseles, campañas y publicación en Instagram, TikTok, YouTube, Facebook y LinkedIn',
+        'Planes Gratis, Creador, Pro y Equipo, más API para agencias',
+      ],
+      en: [
+        'Long video to clips, or script to video with voice, music and b-roll',
+        'Its own in-browser editor: what you see is what you export',
+        'Carousels, campaigns and posting to Instagram, TikTok, YouTube, Facebook and LinkedIn',
+        'Free, Creator, Pro and Team plans, plus an API for agencies',
+      ],
+    },
+    stack: ['Python', 'FastAPI', 'React', 'Remotion', 'Claude', 'Whisper', 'Cloud Run', 'Neon Postgres', 'Stripe'],
+  },
+  {
     id: 'biblia',
-    name: 'Biblia de Estudio',
+    name: 'Zarza',
     shape: 'book',
     color: '#E8A06A',
     accent: '#B4501A',
     year: '2026',
     url: 'https://zarzabiblia.com',
     status: { es: 'Beta pública', en: 'Public beta' },
-    kicker: { es: 'Estudio bíblico profundo con IA', en: 'Deep Bible study with AI' },
+    kicker: { es: 'Biblia de estudio con IA', en: 'AI study Bible' },
     pitch: {
       es: 'Tan simple como una app de lectura, tan profunda como una biblioteca de seminario. Griego y hebreo palabra por palabra, comentarios clásicos y un estudio con IA que cita cada versículo.',
       en: 'As simple as a reading app, as deep as a seminary library. Word-by-word Greek and Hebrew, classic commentaries and an AI study that cites every verse.',
@@ -87,6 +136,36 @@ export const projects: Project[] = [
       ],
     },
     stack: ['Expo', 'React Native', 'Vercel', 'Neon Postgres', 'Claude', 'Python data pipeline'],
+  },
+  {
+    id: 'ruaj',
+    name: 'Ruaj',
+    shape: 'helix',
+    color: '#7FC46A',
+    accent: '#F2B544',
+    year: '2026',
+    url: 'https://ruajapp.com',
+    status: { es: 'Gratis en cualquier tablet', en: 'Free on any tablet' },
+    kicker: { es: 'Comunicador con pictogramas y voz', en: 'Picture-based communicator with voice' },
+    pitch: {
+      es: 'Le da voz a niños y adultos que no hablan o hablan poco: tocan pictogramas, la frase se conjuga sola y la tablet la dice en voz alta, con voces colombianas.',
+      en: 'It gives a voice to children and adults who speak little or not at all: they tap pictures, the sentence conjugates itself and the tablet says it out loud, in Colombian Spanish voices.',
+    },
+    points: {
+      es: [
+        'Tablero con posiciones fijas y el código de colores de la fonoaudióloga',
+        'Gramática en español: conjuga verbos y ajusta género y número',
+        'Acceso por toque, barrido con pulsador o mirada',
+        'Web, iOS y Android con una sola base de código',
+      ],
+      en: [
+        'Fixed-position board with the speech therapist’s color code',
+        'Spanish grammar: conjugates verbs and fixes gender and number',
+        'Access by touch, switch scanning or eye gaze',
+        'Web, iOS and Android from one codebase',
+      ],
+    },
+    stack: ['Expo', 'React Native', 'TypeScript', 'Vercel', 'ElevenLabs', 'PWA'],
   },
   {
     id: 'cancionero',
@@ -285,7 +364,7 @@ export const t = {
       'Doce años convirtiendo problemas difíciles en productos que la gente usa a diario. Hoy diseño agentes de IA, plataformas multi-tenant y apps que caben en un bolsillo, de la arquitectura al último pixel.',
     stats: [
       { n: 12, suffix: '+', label: 'años construyendo software' },
-      { n: 4, suffix: '', label: 'productos propios en 2026' },
+      { n: 6, suffix: '', label: 'productos propios en 2026' },
       { n: 1700, suffix: '+', label: 'commits en Deus Rex' },
       { n: 2, suffix: '', label: 'idiomas: español nativo, inglés C2' },
     ],
@@ -317,6 +396,7 @@ export const t = {
       wa: 'WhatsApp',
     },
     footer: 'Hecho a mano con Astro, Three.js y GSAP.',
+    legal: { terms: 'Términos', privacy: 'Privacidad', termsHref: '/terminos', privacyHref: '/privacidad' },
   },
   en: {
     meta: {
@@ -339,7 +419,7 @@ export const t = {
       'Twelve years turning hard problems into products people use every day. Today I design AI agents, multi-tenant platforms and apps that fit in a pocket, from the architecture to the last pixel.',
     stats: [
       { n: 12, suffix: '+', label: 'years building software' },
-      { n: 4, suffix: '', label: 'own products shipped in 2026' },
+      { n: 6, suffix: '', label: 'own products shipped in 2026' },
       { n: 1700, suffix: '+', label: 'commits on Deus Rex' },
       { n: 2, suffix: '', label: 'languages: native Spanish, C2 English' },
     ],
@@ -371,6 +451,7 @@ export const t = {
       wa: 'WhatsApp',
     },
     footer: 'Handmade with Astro, Three.js and GSAP.',
+    legal: { terms: 'Terms', privacy: 'Privacy', termsHref: '/en/terms', privacyHref: '/en/privacy' },
   },
 } as const;
 
@@ -404,7 +485,7 @@ export const services = {
       {
         t: 'Producto de punta a punta',
         d: 'De la idea al lanzamiento: arquitectura, frontend, backend, infraestructura en la nube y salida al mercado. Un solo responsable que entiende el negocio y el código.',
-        p: 'Deus Rex, Biblia de Estudio y Hoy Vemos en 2026',
+        p: 'Deus Rex, Rvela, Zarza, Ruaj y Hoy Vemos en 2026',
         tags: ['React', 'Node · Bun', 'AWS', 'Terraform', 'Vercel'],
       },
       {
@@ -437,7 +518,7 @@ export const services = {
       {
         t: 'End-to-end product',
         d: 'From idea to launch: architecture, frontend, backend, cloud infrastructure and go-to-market. One owner who understands both the business and the code.',
-        p: 'Deus Rex, Biblia de Estudio and Hoy Vemos in 2026',
+        p: 'Deus Rex, Rvela, Zarza, Ruaj and Hoy Vemos in 2026',
         tags: ['React', 'Node · Bun', 'AWS', 'Terraform', 'Vercel'],
       },
       {

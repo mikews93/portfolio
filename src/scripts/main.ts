@@ -252,7 +252,7 @@ function work() {
       const bar = $('.work__progress i');
       if (bar) bar.style.transform = `scaleX(${cur / (n - 1)})`;
       const count = $('.work__count b');
-      if (count) count.textContent = String(idx + 1).padStart(2, '0');
+      if (count) count.textContent = String(Math.max(1, idx)).padStart(2, '0'); // panel 0 is the intro
       if (idx !== lastIdx) {
         lastIdx = idx;
         dispatchEvent(new CustomEvent('mb:whoosh', { detail: panels[idx]?.dataset.sound }));
