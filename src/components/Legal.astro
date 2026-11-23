@@ -1,0 +1,156 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '../styles/global.css';
+import { site, company, legal, type Lang } from '../content';
+
+interface Props {
+  lang: Lang;
+  page: 'terms' | 'privacy';
+}
+const { lang, page } = Astro.props;
+const es = lang === 'es';
+const paths = { es: { terms: '/terminos', privacy: '/privacidad' }, en: { terms: '/en/terms', privacy: '/en/privacy' } };
+const here = paths[lang][page];
+const there = paths[es ? 'en' : 'es'][page];
+const title = page === 'terms' ? (es ? 'Términos' : 'Terms') : es ? 'Privacidad' : 'Privacy';
+const updated = es ? 'Última actualización: 23 de noviembre de 2026' : 'Last updated: November 23, 2026';
+const linkFor = (p: (typeof legal)[number]) => (page === 'terms' ? p.terms : p.privacy);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Migue Blanco · {company.short}</title>
+    <meta name="description" content={es ? `${title} de ${company.name} y de sus productos.` : `${title} of ${company.name} and its products.`} />
+    <link rel="canonical" href={`${site.url}${here}`} />
+    <link rel="alternate" hreflang={lang} href={`${site.url}${here}`} />
+    <link rel="alternate" hreflang={es ? 'en' : 'es'} href={`${site.url}${there}`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0a0a0c" />
+  </head>
+  <body class="legal-page">
+    <header class="legal__top mono">
+      <a href={es ? '/' : '/en/'}>← Migue Blanco</a>
+      <a href={there} hreflang={es ? 'en' : 'es'}>{es ? 'English' : 'Español'}</a>
+    </header>
+    <main class="legal">
+      <p class="kicker mono">{company.name}</p>
+      <h1>{title}</h1>
+      <p class="mono muted">{updated}</p>
+
+      <section>
+        <h2>{es ? 'Quién ofrece estos productos' : 'Who offers these products'}</h2>
+        <p>
+          {es
+            ? `Los productos de esta página los ofrece y los cobra ${company.name}, compañía de ${company.state.es}, número de registro ${company.registry}, con domicilio en ${company.address}. La dirige Miguel Blanco.`
+            : `The products on this page are offered and billed by ${company.name}, a ${company.state.en} company, registration number ${company.registry}, located at ${company.address}. It is run by Miguel Blanco.`}
+        </p>
+        <p>
+          {es ? 'Contacto: ' : 'Contact: '}<a href={`mailto:${site.email}`}>{site.email}</a> · {site.phone}
+        </p>
+      </section>
+
+      <section>
+        <h2>{page === 'terms' ? (es ? 'Términos de cada producto' : 'Each product’s terms') : es ? 'Privacidad de cada producto' : 'Each product’s privacy policy'}</h2>
+        <p>
+          {page === 'terms'
+            ? es
+              ? 'Cada producto tiene sus propios términos, y esos mandan sobre lo que uses ahí: planes, precios, cancelación y reembolsos.'
+              : 'Each product has its own terms, and they govern what you use there: plans, prices, cancellation and refunds.'
+            : es
+              ? 'Cada producto explica qué datos guarda, para qué y con quién los comparte en su propia política.'
+              : 'Each product explains what data it keeps, why and who it shares it with in its own policy.'}
+        </p>
+        <ul class="legal__list">
+          {
+            legal.map((p) => (
+              <li>
+                <a href={p.url} target="_blank" rel="noopener">{p.name}</a>
+                {linkFor(p) ? (
+                  <a class="mono" href={linkFor(p)} target="_blank" rel="noopener">
+                    {new URL(linkFor(p)!).host + new URL(linkFor(p)!).pathname} ↗
+                  </a>
+                ) : (
+                  <span class="mono muted">{es ? 'Aplican los términos de esta página' : 'The terms on this page apply'}</span>
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      {
+        page === 'terms' ? (
+          <>
+            <section>
+              <h2>{es ? 'Pagos' : 'Payments'}</h2>
+              <p>
+                {es
+                  ? `Los pagos se procesan con Stripe; nunca vemos ni guardamos los datos completos de tu tarjeta. En tu estado de cuenta el cobro aparece como ${company.descriptor} seguido del nombre del producto, por ejemplo ${company.descriptor}* RVELA.`
+                  : `Payments are processed by Stripe; we never see or store your full card details. On your statement the charge shows as ${company.descriptor} followed by the product name, for example ${company.descriptor}* RVELA.`}
+              </p>
+              <p>
+                {es
+                  ? 'Las suscripciones se renuevan solas hasta que las canceles desde la cuenta del producto, y la cancelación vale al final del periodo ya pagado. Si no reconoces un cobro o crees que es un error, escríbenos y lo revisamos; cuando corresponde un reembolso, vuelve al mismo medio de pago.'
+                  : 'Subscriptions renew automatically until you cancel them from the product’s account, and cancellation takes effect at the end of the period already paid. If you do not recognize a charge or think it is a mistake, write to us and we will review it; when a refund applies, it goes back to the same payment method.'}
+              </p>
+            </section>
+            <section>
+              <h2>{es ? 'Servicios a la medida' : 'Custom services'}</h2>
+              <p>
+                {es
+                  ? 'El desarrollo de software, la consultoría en IA y el liderazgo técnico para empresas se acuerdan por escrito en cada proyecto, con su alcance, precio y entregas.'
+                  : 'Software development, AI consulting and technical leadership for companies are agreed in writing for each project, with its scope, price and deliverables.'}
+              </p>
+            </section>
+            <section>
+              <h2>{es ? 'Este sitio' : 'This site'}</h2>
+              <p>
+                {es
+                  ? 'migueblanco.com es informativo. Sus textos, diseño, código y música son de Miguel Blanco y de MB Technology Solutions LLC; puedes enlazarlos, pero no copiarlos para uso comercial sin permiso.'
+                  : 'migueblanco.com is informational. Its text, design, code and music belong to Miguel Blanco and MB Technology Solutions LLC; you may link to them but not copy them for commercial use without permission.'}
+              </p>
+              <p>
+                {es
+                  ? 'En la medida que permita la ley, no respondemos por daños indirectos. Nada de esto limita los derechos que te da la ley de protección al consumidor de tu país.'
+                  : 'To the extent the law allows, we are not liable for indirect damages. Nothing here limits the rights your country’s consumer protection law gives you.'}
+              </p>
+              <p>
+                {es
+                  ? 'Si cambiamos estos términos, actualizamos la fecha de arriba. Para cualquier duda o reclamo, escríbenos al correo de contacto.'
+                  : 'If we change these terms, we update the date above. For any question or complaint, write to the contact email.'}
+              </p>
+            </section>
+          </>
+        ) : (
+          <section>
+            <h2>{es ? 'Este sitio' : 'This site'}</h2>
+            <p>
+              {es
+                ? 'migueblanco.com no tiene cuentas, formularios, cookies de seguimiento ni analítica. Las fuentes y los sonidos se sirven desde el mismo sitio. El servidor (Vercel) guarda por un tiempo corto registros técnicos de cada visita, como la dirección IP y el navegador, para que el sitio funcione y sea seguro.'
+                : 'migueblanco.com has no accounts, forms, tracking cookies or analytics. Fonts and sounds are served from the site itself. The host (Vercel) briefly keeps technical logs of each visit, such as IP address and browser, to keep the site running and secure.'}
+            </p>
+            <p>
+              {es
+                ? 'Si nos escribes por correo o WhatsApp, usamos lo que nos envíes solo para responderte, y lo borramos si lo pides.'
+                : 'If you write to us by email or WhatsApp, we use what you send only to reply, and delete it if you ask.'}
+            </p>
+            <p>
+              {es
+                ? 'Cuando pagas un producto, Stripe procesa el pago bajo su propia política de privacidad; nosotros recibimos tu nombre, correo y los últimos dígitos de la tarjeta, no la tarjeta completa.'
+                : 'When you pay for a product, Stripe processes the payment under its own privacy policy; we receive your name, email and the last digits of your card, never the full card.'}
+            </p>
+          </section>
+        )
+      }
+    </main>
+    <footer class="footer mono">
+      <span>© {new Date().getFullYear()} Migue Blanco · {company.name}</span>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </footer>
+  </body>
+</html>

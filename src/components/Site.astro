@@ -5,7 +5,7 @@ import '@fontsource/instrument-serif/400-italic.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
-import { t as dict, projects, jobs, skills, services as servicesDict, site, type Lang } from '../content';
+import { t as dict, projects, jobs, skills, services as servicesDict, site, company, type Lang } from '../content';
 
 interface Props {
   lang: Lang;
@@ -223,6 +223,27 @@ const person = {
                             {lang === 'es' ? 'La medicina es para las personas.' : 'Medicine is for people.'}
                             <em>{lang === 'es' ? 'Lo demás, para la IA.' : 'The rest is for AI.'}</em>
                           </p>
+                        </div>
+                      </div>
+                    )}
+                    {p.id === 'rvela' && (
+                      <div class="device device--rvela">
+                        <video autoplay muted loop playsinline preload="none" poster="/work/rvela-poster.webp">
+                          <source src="/work/rvela-hero.mp4" type="video/mp4" />
+                        </video>
+                        <div class="float-card float-card--cut">
+                          <span class="mono">✂ {lang === 'es' ? '14 silencios cortados' : '14 silences cut'}</span>
+                          <small>{lang === 'es' ? 'Subtítulos · encuadre vertical' : 'Captions · vertical reframe'}</small>
+                        </div>
+                      </div>
+                    )}
+                    {p.id === 'ruaj' && (
+                      <div class="tablet">
+                        <img src="/work/ruaj.webp" alt={lang === 'es' ? 'Tablero de pictogramas de Ruaj' : 'Ruaj picture board'} loading="lazy" width="1200" height="838" />
+                        <div class="tablet__phrase">
+                          <img src="/work/ruaj-mark.svg" alt="" width="28" height="28" />
+                          <span>{lang === 'es' ? 'Yo quiero jugar' : 'I want to play'}</span>
+                          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></svg>
                         </div>
                       </div>
                     )}
@@ -476,8 +497,12 @@ const person = {
     </main>
 
     <footer class="footer mono">
-      <span>© {year} Migue Blanco</span>
+      <span>© {year} Migue Blanco · {company.name}</span>
       <span>{t.footer}</span>
+      <span class="footer__legal">
+        <a href={t.legal.termsHref}>{t.legal.terms}</a>
+        <a href={t.legal.privacyHref}>{t.legal.privacy}</a>
+      </span>
       <a href={t.nav.switchHref} hreflang={other}>{lang === 'es' ? 'English version' : 'Versión en español'}</a>
     </footer>
 
