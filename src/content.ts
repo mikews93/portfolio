@@ -25,7 +25,7 @@ export const legal: { name: string; url: string; terms?: string; privacy?: strin
   { name: 'Deus Rex', url: 'https://deusrex.io', terms: 'https://deusrex.io/terms', privacy: 'https://deusrex.io/privacy' },
   { name: 'Zarza', url: 'https://zarzabiblia.com', terms: 'https://zarzabiblia.com/terminos', privacy: 'https://zarzabiblia.com/privacidad' },
   { name: 'Ruaj', url: 'https://ruajapp.com', terms: 'https://ruajapp.com/terminos.html', privacy: 'https://ruajapp.com/privacidad.html' },
-  { name: 'Hoy Vemos', url: 'https://hoyvemos.migueblanco.com', privacy: 'https://hoyvemos.migueblanco.com/privacidad' },
+  { name: 'Hoy Vemos', url: 'https://hoyvemos.migueblanco.com' },
 ];
 
 /** Scene shapes the WebGL particle field morphs into (see src/scripts/scene.ts). */
