@@ -2114,6 +2114,14 @@ section {
   text-decoration-color: var(--red);
   text-underline-offset: 3px;
 }
+.legal__bullets {
+  margin: 0 0 14px;
+  padding-left: 1.2em;
+  line-height: 1.6;
+}
+.legal__bullets li {
+  margin-bottom: 8px;
+}
 .legal__list {
   list-style: none;
   padding: 0;

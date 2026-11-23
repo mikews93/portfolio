@@ -59,8 +59,8 @@ const linkFor = (p: (typeof legal)[number]) => (page === 'terms' ? p.terms : p.p
         <p>
           {page === 'terms'
             ? es
-              ? 'Cada producto tiene sus propios términos, y esos mandan sobre lo que uses ahí: planes, precios, cancelación y reembolsos.'
-              : 'Each product has its own terms, and they govern what you use there: plans, prices, cancellation and refunds.'
+              ? 'Cada producto tiene sus propios términos, que mandan sobre lo que uses ahí: planes, precios y uso. La política de pagos, cancelación y reembolsos de abajo vale para todos.'
+              : 'Each product has its own terms, which govern what you use there: plans, prices and use. The payment, cancellation and refund policy below applies to all of them.'
             : es
               ? 'Cada producto explica qué datos guarda, para qué y con quién los comparte en su propia política.'
               : 'Each product explains what data it keeps, why and who it shares it with in its own policy.'}
@@ -95,8 +95,32 @@ const linkFor = (p: (typeof legal)[number]) => (page === 'terms' ? p.terms : p.p
               </p>
               <p>
                 {es
-                  ? 'Las suscripciones se renuevan solas hasta que las canceles desde la cuenta del producto, y la cancelación vale al final del periodo ya pagado. Si no reconoces un cobro o crees que es un error, escríbenos y lo revisamos; cuando corresponde un reembolso, vuelve al mismo medio de pago.'
-                  : 'Subscriptions renew automatically until you cancel them from the product’s account, and cancellation takes effect at the end of the period already paid. If you do not recognize a charge or think it is a mistake, write to us and we will review it; when a refund applies, it goes back to the same payment method.'}
+                  ? 'Las suscripciones se renuevan solas cada mes o cada año hasta que las canceles desde la cuenta del producto. Al cancelar, sigues usando lo que pagaste hasta el final de ese periodo y no se vuelve a cobrar; no devolvemos la parte proporcional del periodo en curso.'
+                  : 'Subscriptions renew automatically every month or year until you cancel them from the product’s account. When you cancel, you keep what you paid for until the end of that period and are not charged again; we do not refund the unused part of the current period.'}
+              </p>
+            </section>
+            <section id={es ? 'reembolsos' : 'refunds'}>
+              <h2>{es ? 'Reembolsos' : 'Refunds'}</h2>
+              <ul class="legal__bullets">
+                {(es
+                  ? [
+                      'Los paquetes (por ejemplo, videos o chispas) y el primer pago de una suscripción se devuelven completos si lo pides dentro de los 14 días siguientes a la compra y todavía no los usaste.',
+                      'Lo que ya usaste no se devuelve, porque en muchos productos cada uso tiene un costo de IA para nosotros.',
+                      'Los cobros duplicados o hechos por un error nuestro se devuelven siempre.',
+                      `Para pedirlo, escribe a ${site.email} o al soporte del producto con el correo de tu cuenta. Respondemos en máximo 5 días hábiles y el dinero vuelve al mismo medio de pago; según tu banco, puede tardar de 5 a 10 días hábiles en verse.`,
+                    ]
+                  : [
+                      'Packs (for example, videos or credits) and the first payment of a subscription are refunded in full if you ask within 14 days of purchase and have not used them yet.',
+                      'What you already used is not refunded, because in many products each use has an AI cost for us.',
+                      'Duplicate charges or charges made by our mistake are always refunded.',
+                      `To ask, write to ${site.email} or the product’s support with your account email. We reply within 5 business days and the money goes back to the same payment method; depending on your bank, it can take 5 to 10 business days to show.`,
+                    ]
+                ).map((x) => <li>{x}</li>)}
+              </ul>
+              <p>
+                {es
+                  ? 'Esto no limita el derecho de retracto ni otros derechos que te dé la ley de protección al consumidor de tu país.'
+                  : 'This does not limit the right of withdrawal or other rights your country’s consumer protection law gives you.'}
               </p>
             </section>
             <section>
