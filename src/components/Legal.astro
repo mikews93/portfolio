@@ -75,7 +75,7 @@ const linkFor = (p: (typeof legal)[number]) => (page === 'terms' ? p.terms : p.p
                     {new URL(linkFor(p)!).host + new URL(linkFor(p)!).pathname} ↗
                   </a>
                 ) : (
-                  <span class="mono muted">{es ? 'Aplican los términos de esta página' : 'The terms on this page apply'}</span>
+                  <span class="mono muted">{page === 'terms' ? (es ? 'Aplican los términos de esta página' : 'The terms on this page apply') : es ? 'Aplica la privacidad de esta página' : 'This page’s privacy policy applies'}</span>
                 )}
               </li>
             ))
